@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS incredibleweddingorganizer_db;
+CREATE DATABASE incredibleweddingorganizer_db;
