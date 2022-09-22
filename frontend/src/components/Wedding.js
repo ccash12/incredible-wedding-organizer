@@ -2,7 +2,7 @@ import {useState} from 'react'
 
 
 function Wedding () {
-    const [weddingName, setweddningName] = useState("")
+    const [weddingName, setWeddingName] = useState("")
     const [date, setDate] = useState("")
     const [spouseOne, setSpouseOne] = useState("")
     const [spouseTwo, setSpouseTwo] = useState("")
@@ -33,7 +33,7 @@ function Wedding () {
                         name='name'
                         placeholder='name'
                         value={weddingName}
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => setWeddingName(e.target.value)}
                     />
                     <input
                         type='date'
@@ -54,7 +54,7 @@ function Wedding () {
                         name='spouseTwo'
                         placeholder='Spouse Two'
                         value={spouseTwo}
-                        onChange={(e) => seSpouseTwo(e.target.value)}
+                        onChange={(e) => setSpouseTwo(e.target.value)}
                     />
                 <button type="submit">Create New Weddding</button>
                 </form>
