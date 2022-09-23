@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import API from '../../utils/API'
 
 
 function Wedding () {
@@ -9,18 +10,8 @@ function Wedding () {
 
     function handleSubmit(e) {
         e.preventDefault();
-        fetch('', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                weddingName: weddingName,
-                date:date,
-                spouseOne:spouseOne,
-                spouseTwo:spouseTwo
-            }),
-        })
-            .then(response => response.json()).
-            .then((newWedding) => handleNewWedding(newWedding))
+            API.createWedding({weddingName,date,spouseOne,spouseTwo})
+            .then((res)=> {console.log(success)}).catch((err)=>{console.log(error)})
 
         return( 
             <div>
