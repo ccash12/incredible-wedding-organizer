@@ -20,6 +20,12 @@ const API = {
       },
     });
   },
-};
+  createWedding:(data,tkn) => {
+    return axios.post(`${URL_PREFIX}/api/weddings`, data,{
+      headers: {
+        Authorization: `Bearer ${tkn}`,
+      },
+    });
+}};
 
 export default API;
