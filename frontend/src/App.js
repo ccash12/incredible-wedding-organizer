@@ -3,6 +3,7 @@ import API from "./utils/API";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import "bootstrap/dist/css/bootstrap.css";
+import Wedding from "./components/Wedding/Wedding";
 
 export default function App() {
   const [userState, setUserState] = useState({
@@ -92,6 +93,12 @@ export default function App() {
             <div className="text-center">Your email is: {userState.email}</div>
             <div className="text-center">Your token is: {token}</div>
           </div>
+            <div className="row">
+              <Wedding 
+                token={token}
+                
+                />
+            </div>
         </div>
       ) : null}
       
