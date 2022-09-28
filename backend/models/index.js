@@ -1,11 +1,14 @@
 const User = require('./User');
-const Weddings = require('./Weddings')
+const Wedding = require('./Wedding')
+const UserWedding = require('./UserWedding')
 
-User.belongsToMany(Weddings, {
-    through: "UserWeddings"
+User.belongsToMany(Wedding, {
+    through: "UserWedding",
+    foreignKey: 'userId'
 });
-Weddings.belongsToMany(User, {
-    through: "UserWeddings"
+Wedding.belongsToMany(User, {
+    through: "UserWedding",
+    foreignKey: 'weddingId'
 });
 
-module.exports = {User, Weddings};
+module.exports = {User, Wedding, UserWedding};

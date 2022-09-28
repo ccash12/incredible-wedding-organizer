@@ -6,7 +6,7 @@ const router = express.Router();
 const userRoutes = require("./userController");
 router.use("/user", userRoutes);
 
-const weddingsRoutes = require ('./weddingsController');
-router.use("/weddings", weddingsRoutes);
+const weddingRoutes = require ('./weddingController');
+router.use("/wedding", weddingRoutes);
 
 module.exports = router;
