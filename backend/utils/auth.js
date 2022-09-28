@@ -11,13 +11,11 @@ module.exports = {
           console.log("token error " + err);
           return res.status(403).send("invalid token");
         } else {
-          console.log("success");
           req.user = data.data;
           next();
         }
       });
     } else {
-      console.log("bad");
       return res.status(403).send("include your token");
     }
   },

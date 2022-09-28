@@ -2,9 +2,9 @@ const { Model, DataTypes } = require('sequelize');
 
 const sequelize = require('../config/connection');
 
-class Weddings extends Model {};
+class Wedding extends Model {};
 
-Weddings.init({
+Wedding.init({
     weddingName: {
         type: DataTypes.STRING,
         allowNull: false
@@ -24,6 +24,6 @@ Weddings.init({
 },
 {sequelize})
 
-module.exports = Weddings;
+module.exports = Wedding;
 
 
