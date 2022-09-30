@@ -4,9 +4,32 @@ import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import "bootstrap/dist/css/bootstrap.css";
 import Wedding from "./components/Wedding/Wedding";
+import './darkMode.css';
 
 export default function App() {
-  const [userState, setUserState] = useState({
+  // const [theme, setTheme] = useState('light')
+  //   const toggleTheme = () => {
+  //     if(theme === 'light') {
+  //       setTheme('dark');
+  //     }
+  //     else {setTheme('light')
+  //   }
+  //   return(
+  //     <div> 
+  //       <button onClick={toggleTheme}> Toggle Theme </button> 
+  //     </div>
+  //   )
+  //   };
+  //   useEffect(() => {
+  //     document.body.className = theme;
+  //   },[theme]);
+  //     return(
+  //       <div className={`app ${theme}`}>
+  //         <button onClick={toggleTheme}> Toggle Theme</button>
+  //       </div> 
+  //     )
+  
+    const [userState, setUserState] = useState({
     firstname: "",
     email: "",
     id: "",

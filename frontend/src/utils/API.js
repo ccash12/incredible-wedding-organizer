@@ -21,7 +21,7 @@ const API = {
     });
   },
   createWedding:(data,tkn) => {
-    return axios.post(`${URL_PREFIX}/api/weddings`, data,{
+    return axios.post(`${URL_PREFIX}/api/wedding`, data,{
       headers: {
         Authorization: `Bearer ${tkn}`,
       },
