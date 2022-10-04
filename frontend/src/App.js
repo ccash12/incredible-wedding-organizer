@@ -4,32 +4,13 @@ import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import "bootstrap/dist/css/bootstrap.css";
 import Wedding from "./components/Wedding/Wedding";
-import './darkMode.css';
+import "./darkMode.css";
+import Display from "./components/Wedding/Display";
 
 export default function App() {
-  // const [theme, setTheme] = useState('light')
-  //   const toggleTheme = () => {
-  //     if(theme === 'light') {
-  //       setTheme('dark');
-  //     }
-  //     else {setTheme('light')
-  //   }
-  //   return(
-  //     <div> 
-  //       <button onClick={toggleTheme}> Toggle Theme </button> 
-  //     </div>
-  //   )
-  //   };
-  //   useEffect(() => {
-  //     document.body.className = theme;
-  //   },[theme]);
-  //     return(
-  //       <div className={`app ${theme}`}>
-  //         <button onClick={toggleTheme}> Toggle Theme</button>
-  //       </div> 
-  //     )
-  
-    const [userState, setUserState] = useState({
+  const [theme, setTheme] = useState("light");
+
+  const [userState, setUserState] = useState({
     firstname: "",
     email: "",
     id: "",
@@ -41,12 +22,23 @@ export default function App() {
     localStorage.removeItem("weddingtoken");
     setUserState({ username: "", email: "", id: "" });
     setToken("");
-    
+  };
+
+  const toggleTheme = () => {
+    if (theme === "light") {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
   };
 
   useEffect(() => {
+    document.body.className = theme;
+  }, [theme]);
+
+  useEffect(() => {
     const myToken = localStorage.getItem("weddingtoken");
-    
+
     if (myToken) {
       API.verify(myToken)
         .then((res) => {
@@ -56,7 +48,6 @@ export default function App() {
             email: res.data.email,
             id: res.data.id,
           });
-          
         })
         .catch((err) => {
           console.log(err);
@@ -66,6 +57,9 @@ export default function App() {
   }, []);
   return (
     <div className="container">
+      <div className="mx-0">
+        <button onClick={toggleTheme}> Toggle Theme </button>
+      </div>
       {!userState.firstname ? (
         <>
           <div className="d-grid gap-2 col-6 mx-auto">
@@ -116,15 +110,14 @@ export default function App() {
             <div className="text-center">Your email is: {userState.email}</div>
             <div className="text-center">Your token is: {token}</div>
           </div>
-            <div className="row">
-              <Wedding 
-                token={token}
-                
-                />
-            </div>
+          <div className="row">
+            <Wedding token={token} />
+          </div>
+          <div className="row">
+            <Display token={token} />
+          </div>
         </div>
       ) : null}
-      
     </div>
   );
 }

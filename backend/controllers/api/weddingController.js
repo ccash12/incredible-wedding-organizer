@@ -5,12 +5,16 @@ const router = require("express").Router();
 
 router.post("/", authMiddleware, async (req, res) => {
   try {
-    const weddingData = await Wedding.create({
-      weddingName: req.body.weddingName,
-      date: req.body.date,
-      spouseName1: req.body.spouseName1,
-      spouseName2: req.body.spouseName2,
-    });
+    if (!req.body.date.length) {
+      req.body.date = null;
+    }
+      const weddingData = await Wedding.create({
+        weddingName: req.body.weddingName,
+        date: req.body.date,
+        spouseName1: req.body.spouseName1,
+        spouseName2: req.body.spouseName2,
+      });
+    
     const userWeddingData = await UserWedding.create({
       userId: req.user.id,
       weddingId: weddingData.id,
@@ -24,15 +28,13 @@ router.post("/", authMiddleware, async (req, res) => {
 
 router.get("/", authMiddleware, async (req, res) => {
   try {
-    const user = await User.findOne({
-      where: { email: req.user.email },
-      include: Wedding,
+    const userDetail = await User.findOne({
+      where: {
+        id: req.user.id,
+      },
     });
-    if (!user) {
-      res.status(404).json({ message: "No user found" });
-      return;
-    }
-    res.status(200).json(user);
+    const weddings = await userDetail.getWeddings();
+    res.status(200).json(weddings);
   } catch (err) {
     console.log(err);
     res.status(400).json({ message: "an error occured", err: err });
@@ -72,7 +74,7 @@ router.post("/add/:id", authMiddleware, async (req, res) => {
       weddingId: req.params.id,
       userId: req.body.userId,
     });
-    res.status(200).json({message:"Success",added})
+    res.status(200).json({ message: "Success", added });
   } catch (err) {
     res.status(400).json({ message: "an error occured", err: err });
   }

@@ -1,58 +1,77 @@
-import {useState} from 'react'
-import API from '../../utils/API'
+import { useState } from "react";
+import API from "../../utils/API";
 
+function Wedding({ token }) {
+  const [weddingFormState, setWeddingFormState] = useState({
+    weddingName: "",
+    date: "",
+    spouseName1: "",
+    spouseName2: "",
+  });
 
-function Wedding ({token}) {
-    const [weddingName, setWeddingName] = useState("")
-    const [date, setDate] = useState("")
-    const [spouseName1, setSpouseName1] = useState("")
-    const [spouseName2, setSpouseName2] = useState("")
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setWeddingFormState({
+      ...weddingFormState,
+      [name]: value,
+    });
+  };
 
-    function handleSubmit(e) {
-        e.preventDefault();
-            API.createWedding({weddingName,date,spouseName1,spouseName2},token)
-            .then((res)=> {console.log('success')}).catch((err)=>{console.log('error')})
-            }
-        return( 
-            <div>
-                <div>
-                    <h3>Add New Wedding</h3>
-                </div> 
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type='text'
-                        name='name'
-                        placeholder='Wedding Name'
-                        value={weddingName}
-                        onChange={(e) => setWeddingName(e.target.value)}
-                    />
-                    <input
-                        type='date'
-                        name='date'
-                        placeholder='Date'
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
-                    />
-                    <input
-                        type='text'
-                        name='spouse1'
-                        placeholder='Spouse 1'
-                        value={spouseName1}
-                        onChange={(e) => setSpouseName1(e.target.value)}
-                    />
-                    <input
-                        type='text'
-                        name='spouse2'
-                        placeholder='Spouse 2'
-                        value={spouseName2}
-                        onChange={(e) => setSpouseName2(e.target.value)}
-                    />
-                <button type="submit">Create New Weddding</button>
-                </form>
-        </div>
-        )
-};
-
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setWeddingFormState({
+      weddingName: "",
+      date: "",
+      spouseName1: "",
+      spouseName2: ""
+    })
+    
+    API.createWedding(weddingFormState, token)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  return (
+    <div>
+      <div>
+        <h3>Add New Wedding</h3>
+      </div>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="weddingName"
+          placeholder="Wedding Name"
+          value={weddingFormState.weddingName}
+          onChange={handleFormChange}
+        />
+        <input
+          type="date"
+          name="date"
+          placeholder="Date"
+          value={weddingFormState.date}
+          onChange={handleFormChange}
+        />
+        <input
+          type="text"
+          name="spouseName1"
+          placeholder="Spouse 1"
+          value={weddingFormState.spouseName1}
+          onChange={handleFormChange}
+        />
+        <input
+          type="text"
+          name="spouseName2"
+          placeholder="Spouse 2"
+          value={weddingFormState.spouseName2}
+          onChange={handleFormChange}
+        />
+        <button type="submit">Create New Weddding</button>
+      </form>
+    </div>
+  );
+}
 
 export default Wedding;
