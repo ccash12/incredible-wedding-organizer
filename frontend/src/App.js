@@ -17,6 +17,7 @@ export default function App() {
   });
   const [token, setToken] = useState();
   const [showLogin, setShowLogin] = useState(true);
+  const [weddings, setWeddings] = useState();
 
   const logout = (e) => {
     localStorage.removeItem("weddingtoken");
@@ -49,12 +50,19 @@ export default function App() {
             id: res.data.id,
           });
         })
+        .then((res) => {
+          API.getWedding(myToken)
+            .then((res) => {
+              setWeddings(res.data);
+            })
+            .catch((err) => console.log(err));
+        })
         .catch((err) => {
           console.log(err);
           localStorage.removeItem("weddingtoken");
         });
     }
-  }, []);
+  }, [token]);
   return (
     <div className="container">
       <div className="mx-0">
@@ -111,10 +119,18 @@ export default function App() {
             <div className="text-center">Your token is: {token}</div>
           </div>
           <div className="row">
-            <Wedding token={token} />
+            <Wedding
+              token={token}
+              weddings={weddings}
+              setWeddings={setWeddings}
+            />
           </div>
           <div className="row">
-            <Display token={token} />
+            <Display
+              token={token}
+              weddings={weddings}
+              setWeddings={setWeddings}
+            />
           </div>
         </div>
       ) : null}

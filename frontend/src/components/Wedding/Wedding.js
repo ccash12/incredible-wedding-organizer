@@ -1,7 +1,7 @@
 import { useState } from "react";
 import API from "../../utils/API";
 
-function Wedding({ token }) {
+function Wedding({ token, weddings, setWeddings }) {
   const [weddingFormState, setWeddingFormState] = useState({
     weddingName: "",
     date: "",
@@ -23,17 +23,24 @@ function Wedding({ token }) {
       weddingName: "",
       date: "",
       spouseName1: "",
-      spouseName2: ""
-    })
-    
+      spouseName2: "",
+    });
+
     API.createWedding(weddingFormState, token)
       .then((res) => {
         console.log(res);
       })
+      .then((res) => {
+        API.getWedding(token)
+          .then((res) => {
+            setWeddings(res.data);
+          })
+          .catch((err) => console.log(err));
+      })
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
   return (
     <div>
       <div>
