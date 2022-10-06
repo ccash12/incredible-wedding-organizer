@@ -9,4 +9,7 @@ router.use("/user", userRoutes);
 const weddingRoutes = require ('./weddingController');
 router.use("/wedding", weddingRoutes);
 
+const partyRoutes = require ('./partyController')
+router.use("/party", partyRoutes)
+
 module.exports = router;

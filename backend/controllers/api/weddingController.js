@@ -8,13 +8,13 @@ router.post("/", authMiddleware, async (req, res) => {
     if (!req.body.date.length) {
       req.body.date = null;
     }
-      const weddingData = await Wedding.create({
-        weddingName: req.body.weddingName,
-        date: req.body.date,
-        spouseName1: req.body.spouseName1,
-        spouseName2: req.body.spouseName2,
-      });
-    
+    const weddingData = await Wedding.create({
+      weddingName: req.body.weddingName,
+      date: req.body.date,
+      spouseName1: req.body.spouseName1,
+      spouseName2: req.body.spouseName2,
+    });
+
     const userWeddingData = await UserWedding.create({
       userId: req.user.id,
       weddingId: weddingData.id,
@@ -37,6 +37,22 @@ router.get("/", authMiddleware, async (req, res) => {
     res.status(200).json(weddings);
   } catch (err) {
     console.log(err);
+    res.status(400).json({ message: "an error occured", err: err });
+  }
+});
+
+router.get("/:id", authMiddleware, async (req, res) => {
+  try {
+    const findWedding = await UserWedding.findOne({
+      where: { weddingId: req.params.id, userId: req.user.id },
+    });
+    if (!findWedding) {
+      res.status(404).json({ message: "No wedding found" });
+      return;
+    }
+    const data = await Wedding.findByPk(req.params.id);
+    res.status(200).json(data);
+  } catch (err) {
     res.status(400).json({ message: "an error occured", err: err });
   }
 });
@@ -75,6 +91,26 @@ router.post("/add/:id", authMiddleware, async (req, res) => {
       userId: req.body.userId,
     });
     res.status(200).json({ message: "Success", added });
+  } catch (err) {
+    res.status(400).json({ message: "an error occured", err: err });
+  }
+});
+
+router.put("/update/:id", authMiddleware, async (req, res) => {
+  try {
+    const findWedding = await UserWedding.findOne({
+      where: { weddingId: req.params.id, userId: req.user.id },
+    });
+    if (!findWedding) {
+      res.status(404).json({ message: "No wedding found" });
+      return;
+    }
+    const update = await Wedding.update(req.body, {
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.status(200).json(update);
   } catch (err) {
     res.status(400).json({ message: "an error occured", err: err });
   }

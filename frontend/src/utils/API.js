@@ -33,8 +33,22 @@ const API = {
       },
     });
   },
-  deleteWedding: (data, tkn) => {
-    return axios.delete(`${URL_PREFIX}/api/wedding/${data}`, {
+  getOneWedding: (id, tkn) => {
+    return axios.get(`${URL_PREFIX}/api/wedding/${id}`, {
+      headers: {
+        Authorization: `Bearer ${tkn}`,
+      },
+    });
+  },
+  updateWedding: (data, id, tkn) => {
+    return axios.put(`${URL_PREFIX}/api/wedding/update/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${tkn}`,
+      },
+    });
+  },
+  deleteWedding: (id, tkn) => {
+    return axios.delete(`${URL_PREFIX}/api/wedding/${id}`, {
       headers: {
         Authorization: `Bearer ${tkn}`,
       },
