@@ -5,7 +5,7 @@ const router = require("express").Router();
 
 router.post("/", authMiddleware, async (req, res) => {
   try {
-    if (!req.body.date.length) {
+    if (!req.body.date) {
       req.body.date = null;
     }
     const weddingData = await Wedding.create({
