@@ -12,4 +12,7 @@ router.use("/wedding", weddingRoutes);
 const partyRoutes = require ('./partyController')
 router.use("/party", partyRoutes)
 
+const guestRoutes = require ('./guestController')
+router.use("/guest", guestRoutes);
+
 module.exports = router;
