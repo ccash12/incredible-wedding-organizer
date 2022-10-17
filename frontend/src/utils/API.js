@@ -54,6 +54,27 @@ const API = {
       },
     });
   },
+  getParties: (id, tkn) => {
+    return axios.get(`${URL_PREFIX}/api/party/${id}`, {
+      headers: {
+        Authorization: `Bearer ${tkn}`,
+      },
+    });
+  },
+  createParty: (data, weddingId, tkn) => {
+    return axios.post(`${URL_PREFIX}/api/party/${weddingId}`, data, {
+      headers: {
+        Authorization: `Bearer ${tkn}`,
+      },
+    });
+  },
+  deleteParty: (weddingId, partyId, tkn) => {
+    return axios.delete(`${URL_PREFIX}/api/party/${weddingId}/${partyId}`, {
+      headers: {
+        Authorization: `Bearer ${tkn}`,
+      },
+    });
+  },
 };
 
 export default API;

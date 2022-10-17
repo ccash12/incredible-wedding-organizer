@@ -27,7 +27,7 @@ Party.init({
         type: DataTypes.STRING,
     },
     zipcode: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
     },
     country: {
         type: DataTypes.STRING,

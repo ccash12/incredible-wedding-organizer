@@ -3,9 +3,9 @@ import API from "./utils/API";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import "bootstrap/dist/css/bootstrap.css";
-import Wedding from "./components/Wedding/Wedding";
 import "./darkMode.css";
-import Display from "./components/Wedding/Display";
+import DisplayWedding from "./components/Wedding/DisplayWedding";
+import DisplayParty from "./components/Party/DisplayParty";
 
 export default function App() {
   const [theme, setTheme] = useState("light");
@@ -18,6 +18,8 @@ export default function App() {
   const [token, setToken] = useState();
   const [showLogin, setShowLogin] = useState(true);
   const [weddings, setWeddings] = useState();
+  const [parties, setParties] = useState();
+  const [weddingId, setWeddingId] = useState();
 
   const logout = (e) => {
     localStorage.removeItem("weddingtoken");
@@ -114,23 +116,29 @@ export default function App() {
           <div className="row">
             <div className="text-center">Welcome {userState.firstname}!</div>
           </div>
+
           <div className="row">
-            <div className="text-center">Your email is: {userState.email}</div>
-            <div className="text-center">Your token is: {token}</div>
-          </div>
-          <div className="row">
-            <Wedding
-              token={token}
-              weddings={weddings}
-              setWeddings={setWeddings}
-            />
-          </div>
-          <div className="row">
-            <Display
-              token={token}
-              weddings={weddings}
-              setWeddings={setWeddings}
-            />
+            <div className="col">
+              <DisplayWedding
+                token={token}
+                weddings={weddings}
+                setWeddings={setWeddings}
+                setParties={setParties}
+                weddingId={weddingId}
+                setWeddingId={setWeddingId}
+              />
+            </div>
+            <div className="col">
+              {parties ? (
+                <DisplayParty
+                  parties={parties}
+                  setParties={setParties}
+                  token={token}
+                  weddingId={weddingId}
+                />
+              ) : null}
+            </div>
+            <div className="col">Test2</div>
           </div>
         </div>
       ) : null}
