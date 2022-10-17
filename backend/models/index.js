@@ -16,6 +16,7 @@ Wedding.belongsToMany(User, {
 
 Party.belongsTo(Wedding, {
   foreignKey: "weddingId",
+  onDelete: "cascade",
 });
 
 Wedding.hasMany(Party, {
@@ -23,17 +24,21 @@ Wedding.hasMany(Party, {
 });
 
 Guest.belongsTo(Party, {
-  foreignKey:"partyId",
-})
+  foreignKey: "partyId",
+  onDelete: "cascade",
+});
 
 Party.hasMany(Guest, {
-  foreignKey:"partyId",
-})
+  foreignKey: "partyId",
+});
 
 Gift.belongsTo(Guest, {
   foreignKey: "giftId",
-})
+  onDelete: "cascade",
+});
 
-
+Guest.hasMany(Gift, {
+  foreignKey: "giftId",
+});
 
 module.exports = { User, Wedding, UserWedding, Party, Guest, Gift };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import API from "../../utils/API";
 import { Button } from "react-bootstrap";
 
-export default function Update({ setShowEdit, target, token, setWeddings }) {
+export default function Update({ setShowEdit, weddingId, token, setWeddings }) {
   const [formState, setFormState] = useState({
     weddingName: "",
     date: "",
@@ -30,7 +30,7 @@ export default function Update({ setShowEdit, target, token, setWeddings }) {
       } else {
         data = { ...formState };
       }
-      await API.updateWedding(data, target, token).then(async (res) => {
+      await API.updateWedding(data, weddingId, token).then(async (res) => {
         setShowEdit(false);
         await API.getWedding(token).then((res) => {
           setWeddings(res.data);
@@ -43,7 +43,7 @@ export default function Update({ setShowEdit, target, token, setWeddings }) {
 
   useEffect(() => {
     try {
-      API.getOneWedding(target, token).then((res) => {
+      API.getOneWedding(weddingId, token).then((res) => {
         // if(!res.data.date) {
         //     res.data.date = "";
         // }
@@ -57,7 +57,7 @@ export default function Update({ setShowEdit, target, token, setWeddings }) {
     } catch (err) {
       console.log(err);
     }
-  }, [target, token]);
+  }, [weddingId, token]);
 
   return (
     <form id="updateWedding" onSubmit={formSubmit}>
@@ -98,7 +98,6 @@ export default function Update({ setShowEdit, target, token, setWeddings }) {
           value={formState.spouseName1}
           onChange={handleFormChange}
           placeholder="Spouse Name"
-          required
         />
         <label className="form-label" htmlFor="spouseName1">
           Spouse Name:
@@ -113,7 +112,6 @@ export default function Update({ setShowEdit, target, token, setWeddings }) {
           value={formState.spouseName2}
           onChange={handleFormChange}
           placeholder="Spouse Name"
-          required
         />
         <label className="form-label" htmlFor="spouseName2">
           Spouse Name:

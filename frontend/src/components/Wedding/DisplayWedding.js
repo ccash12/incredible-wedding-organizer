@@ -1,24 +1,52 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import API from "../../utils/API";
 import {
   Card,
-  Row,
   Col,
   ListGroup,
   ListGroupItem,
   Button,
-  Modal
+  Modal,
 } from "react-bootstrap";
-import Update from "./Update"
+import Update from "./Update";
+import Wedding from "./Wedding";
 
-export default function Display({ token, weddings, setWeddings }) {
+export default function DisplayWedding({
+  token,
+  weddings,
+  setWeddings,
+  setParties,
+  weddingId,
+  setWeddingId,
+}) {
+  const [showAdd, setShowAdd] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const [target, setTarget] = useState("");
 
+  const selectWedding = (e) => {
+    API.getParties(e.target.attributes["data-id"].value, token)
+      .then((res) => {
+        setWeddingId(e.target.attributes["data-id"].value);
+        setParties(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleAddClose = () => setShowAdd(false);
   const handleEditClose = () => setShowEdit(false);
-  const handleEditShow = (e) => {
-    setTarget(e.target.attributes["data-id"].value);
-    setShowEdit(true);
+  const handleShow = (e) => {
+    if (e.target.attributes["data-id"]) {
+      setWeddingId(e.target.attributes["data-id"].value);
+    }
+    switch (e.target.innerHTML) {
+      case "Add Wedding":
+        setShowAdd(true);
+        break;
+      case "Edit":
+        setShowEdit(true);
+        break;
+      default:
+    }
   };
 
   const deleteWedding = (e) => {
@@ -30,9 +58,7 @@ export default function Display({ token, weddings, setWeddings }) {
     ) {
       API.deleteWedding(e.target.attributes["data-id"].value, token)
         .then((res) => {
-          console.log("success", res);
-        })
-        .then((res) => {
+          setParties();
           API.getWedding(token)
             .then((res) => {
               setWeddings(res.data);
@@ -46,8 +72,11 @@ export default function Display({ token, weddings, setWeddings }) {
   };
 
   return (
-    <div className="m-4">
-      <Row>
+    <>
+      <Col>
+        <Button size="sm" onClick={handleShow}>
+          Add Wedding
+        </Button>
         {weddings
           ? weddings.map((item) => {
               return (
@@ -65,10 +94,19 @@ export default function Display({ token, weddings, setWeddings }) {
                       <Button
                         size="sm"
                         data-id={item.id}
+                        onClick={selectWedding}
+                      >
+                        Select
+                      </Button>
+                      <Button
+                        size="sm"
+                        data-id={item.id}
                         className="mx-auto"
                         variant="success"
-                        onClick={handleEditShow}
-                      >Edit</Button>
+                        onClick={handleShow}
+                      >
+                        Edit
+                      </Button>
                       <Button
                         size="sm"
                         data-id={item.id}
@@ -84,15 +122,32 @@ export default function Display({ token, weddings, setWeddings }) {
               );
             })
           : "Create your first wedding!"}
-      </Row>
+      </Col>
       <Modal backdrop="static" show={showEdit} onHide={handleEditClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Edit Wedding</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Update setShowEdit={setShowEdit} target={target} token={token} setWeddings={setWeddings}/>
-            </Modal.Body>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Wedding</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Update
+            setShowEdit={setShowEdit}
+            weddingId={weddingId}
+            token={token}
+            setWeddings={setWeddings}
+          />
+        </Modal.Body>
       </Modal>
-    </div>
+      <Modal backdrop="static" show={showAdd} onHide={handleAddClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Wedding</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Wedding
+            setShowAdd={setShowAdd}
+            token={token}
+            setWeddings={setWeddings}
+          />
+        </Modal.Body>
+      </Modal>
+    </>
   );
 }
