@@ -2,10 +2,17 @@ const { Party, Guest } = require("../../models");
 const { authMiddleware} = require("../../utils/auth");
 const router = require('express').Router();
 
-router.post("/",authMiddleware, async (req, res) =>{
+router.post("/:weddingId/:partyId",authMiddleware, async (req, res) =>{
     try {
+        const findWedding = await UserWedding.findOne({
+            where: { weddingId: req.params.id, userId: req.user.id },
+        });
+        if (!findWedding) {
+            res.status(404).json({ message: "No wedding found" });
+            return;
+        }
         const partyData = await Guest.create({
-            weddingId: req.body.weddingId,
+            weddingId: req.params.partyId,
             guestName: req.body.guestName,
             meal: req.body.meal,
             seat: req.body.seat,
@@ -22,4 +29,42 @@ router.post("/",authMiddleware, async (req, res) =>{
         }
     })
 
-module.exports = router
+    router.get("/:weddingId/:partyId", authMiddleware, async (req, res) => {
+            try {
+                const findWedding = await UserWedding.findOne({
+                where: { weddingId: req.params.id, userId: req. user.id },
+                });
+            if (!findWedding) {
+                res.status(404).json({ messag: "No wedding found" });
+                return;
+            }
+            const partyData = await Guest.findAll({
+                where: { weddingId: req.params.id },
+            });
+            res.status(200).json(partyData);
+            } catch (err) {
+            res.status(500).json({ message: "error", err: err });
+            }
+        });
+        
+        router.delete("/:weddingId/:partyId", authMiddleware, async (req,res)=>{
+            try {
+                const weddingDestroy = await UserWedding.findOne({
+                where: { weddingId: req.params.weddingId, userId: req.user.id },
+                });
+                if (!weddingDestroy) {
+                res.status(404).json({ message: "No wedding found" });
+                return;
+                }
+                const destruction = await Guest.destroy({
+                where: {
+                    id: req.params.partyId
+                }
+                })
+                res.status(200).json(destruction)
+            }catch(err) {
+                res.status(500).json({ message: "error", err: err });
+            }
+        })
+
+    module.exports = router

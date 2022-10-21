@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./darkMode.css";
 import DisplayWedding from "./components/Wedding/DisplayWedding";
 import DisplayParty from "./components/Party/DisplayParty";
+import DisplayGuest from "./components/Guest/DisplayGuest";
 
 export default function App() {
   const [theme, setTheme] = useState("light");
@@ -20,6 +21,8 @@ export default function App() {
   const [weddings, setWeddings] = useState();
   const [parties, setParties] = useState();
   const [weddingId, setWeddingId] = useState();
+  const [guestId, setGuestId] = useState();
+  const [guests, setGuests] = useState();
 
   const logout = (e) => {
     localStorage.removeItem("weddingtoken");
@@ -137,6 +140,15 @@ export default function App() {
                   weddingId={weddingId}
                 />
               ) : null}
+              <div> 
+                <DisplayGuest
+                  guests= {guests}
+                  setGuests = {setGuests}
+                  token={token}
+                  guestId= {guestId}
+
+                />
+              </div>
             </div>
             <div className="col">Test2</div>
           </div>
