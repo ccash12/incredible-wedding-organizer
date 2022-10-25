@@ -1,18 +1,18 @@
-const { Party, Guest } = require("../../models");
+const { UserWedding,Party, Guest } = require("../../models");
 const { authMiddleware} = require("../../utils/auth");
 const router = require('express').Router();
 
 router.post("/:weddingId/:partyId",authMiddleware, async (req, res) =>{
     try {
         const findWedding = await UserWedding.findOne({
-            where: { weddingId: req.params.id, userId: req.user.id },
+            where: { weddingId: req.params.weddingId, userId: req.user.id },
         });
         if (!findWedding) {
             res.status(404).json({ message: "No wedding found" });
             return;
         }
         const partyData = await Guest.create({
-            weddingId: req.params.partyId,
+            partyId: req.params.partyId,
             guestName: req.body.guestName,
             meal: req.body.meal,
             seat: req.body.seat,
@@ -32,14 +32,14 @@ router.post("/:weddingId/:partyId",authMiddleware, async (req, res) =>{
     router.get("/:weddingId/:partyId", authMiddleware, async (req, res) => {
             try {
                 const findWedding = await UserWedding.findOne({
-                where: { weddingId: req.params.id, userId: req. user.id },
+                where: { weddingId: req.params.weddingId, userId: req.user.id },
                 });
             if (!findWedding) {
-                res.status(404).json({ messag: "No wedding found" });
+                res.status(404).json({ message: "No wedding found" });
                 return;
             }
             const partyData = await Guest.findAll({
-                where: { weddingId: req.params.id },
+                where: { partyId: req.params.partyId },
             });
             res.status(200).json(partyData);
             } catch (err) {
@@ -47,7 +47,7 @@ router.post("/:weddingId/:partyId",authMiddleware, async (req, res) =>{
             }
         });
         
-        router.delete("/:weddingId/:partyId", authMiddleware, async (req,res)=>{
+        router.delete("/:weddingId/:guestId", authMiddleware, async (req,res)=>{
             try {
                 const weddingDestroy = await UserWedding.findOne({
                 where: { weddingId: req.params.weddingId, userId: req.user.id },
@@ -58,7 +58,7 @@ router.post("/:weddingId/:partyId",authMiddleware, async (req, res) =>{
                 }
                 const destruction = await Guest.destroy({
                 where: {
-                    id: req.params.partyId
+                    id: req.params.guestId
                 }
                 })
                 res.status(200).json(destruction)
