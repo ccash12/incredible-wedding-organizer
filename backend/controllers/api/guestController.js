@@ -66,5 +66,26 @@ router.post("/:weddingId/:partyId",authMiddleware, async (req, res) =>{
                 res.status(500).json({ message: "error", err: err });
             }
         })
+        
+        router.put("update/:weddingId/:guestId", authMiddleware, async (req, res) => {
+            try {
+                const findWedding = await UserWedding.findOne({
+                    where: { weddingId: req.params.id, userId: req.user.id },
+                });
+                if (!findWedding) {
+                    res.status(404).json({ message: "No wedding found" });
+                    return;
+                }
+                const update = await Guest.update(req.body, {
+                    here: {
+                    id: req.params.id,
+                },
+                });
+                    res.status(200).json(update);
+                } catch (err) {
+                    res.status(400).json({ message: "an error occured", err: err });
+            }
+            });
+            
 
     module.exports = router
