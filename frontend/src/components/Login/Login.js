@@ -3,69 +3,98 @@ import API from "../../utils/API";
 import decode from "jwt-decode";
 
 export default function Login(props) {
+  const [errorMsg, setErrorMsg] = useState();
 
-    const [errorMsg, setErrorMsg] = useState();
+  const [loginFormState, setLoginFormState] = useState({
+    email: "",
+    password: "",
+  });
 
-    const [loginFormState, setLoginFormState] = useState({
-        email: "",
-        password: "",
+  const handleLoginChange = (e) => {
+    const { name, value } = e.target;
+    setLoginFormState({
+      ...loginFormState,
+      [name]: value,
+    });
+  };
+
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    API.login(loginFormState)
+      .then((res) => {
+        setLoginFormState({ email: "", password: "" });
+        setErrorMsg("");
+        const decoded = decode(res.data.token);
+        props.setUserState({
+          firstname: decoded.data.firstname,
+          email: decoded.data.email,
+          id: decoded.data.id,
+        });
+        props.setToken(res.data.token);
+        localStorage.setItem("weddingtoken", res.data.token);
+      })
+      .catch((err) => {
+        setErrorMsg("Wrong email and/or password");
       });
-    
-      const handleLoginChange = e => {
-        const { name, value } = e.target;
-        setLoginFormState({
-          ...loginFormState,
-          [name]: value
-        })
-      }
-    
-      const handleLoginSubmit = (e) => {
-        e.preventDefault();
-        API.login(loginFormState)
-          .then((res) => {
-            setLoginFormState({ email: "", password: "" });
-            setErrorMsg("");
-            const decoded = decode(res.data.token);
-            props.setUserState({
-              firstname: decoded.data.firstname,
-              email:decoded.data.email,
-              id: decoded.data.id
-            });
-            props.setToken(res.data.token);
-            localStorage.setItem("weddingtoken", res.data.token);
-            
-          })
-          .catch((err) => {
-            setErrorMsg("Wrong email and/or password");
-          });
-      };
+  };
 
-      return (
-        <form className="" id="login-form"
-        onSubmit={handleLoginSubmit}
-      >
-        <h4>Login</h4>
-        <input className="" id="email-login"
-          value={loginFormState.email}
-          name="email"
-          onChange={handleLoginChange}
-          type="email"
-          placeholder="Email"
-          autoComplete="email"
-        />
-        <br />
-        <input className="" id="password-login"
-          value={loginFormState.password}
-          name="password"
-          onChange={handleLoginChange}
-          type="password"
-          placeholder="Password"
-          autoComplete="current-password"
-        />
-        <br />
-        <p>{errorMsg}</p>
-        <button className="" id="submit-login">Submit</button>
-      </form>
-      )
+  return (
+    <>
+      <div className="flex justify-center items-center">
+        <form
+          className="bg-slate-200/50 p-2 rounded-lg shadow-xl"
+          id="login-form"
+          onSubmit={handleLoginSubmit}
+        >
+          <h4>Login</h4>
 
+          <div className="form-floating mb-3 xl:w-96">
+            <input
+              type="email"
+              className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white dark:bg-slate-600 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 dark:text-slate-200 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              value={loginFormState.email}
+              name="email"
+              onChange={handleLoginChange}
+              id="email"
+              placeholder="name@example.com"
+              autoComplete="email"
+            />
+            <label
+              htmlFor="email"
+              className="text-gray-700 dark:text-slate-300"
+            >
+              Email address
+            </label>
+          </div>
+          <div className="form-floating mb-3 xl:w-96">
+            <input
+              type="password"
+              className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white dark:bg-slate-600 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 dark:text-slate-200 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              id="floatingPassword"
+              value={loginFormState.password}
+              name="password"
+              onChange={handleLoginChange}
+              placeholder="Password"
+              autoComplete="current-password"
+            />
+            <label
+              htmlFor="floatingPassword"
+              className="text-gray-700 dark:text-slate-300"
+            >
+              Password
+            </label>
+          </div>
+
+          <p>{errorMsg}</p>
+          <button
+            disabled={!loginFormState.email || !loginFormState.password}
+            className="disabled:opacity-50 disabled:cursor-not-allowed p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 rounded-lg drop-shadow-xl"
+            id="submit-login"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </>
+  );
 }

@@ -1,15 +1,6 @@
 import React, { useState } from "react";
-import API from "../../utils/API";
-import {
-  Card,
-  Col,
-  ListGroup,
-  ListGroupItem,
-  Button,
-  Modal,
-} from "react-bootstrap";
-import Update from "./Update";
-import Wedding from "./Wedding";
+import AddWedding from "./AddWedding";
+import WeddingCard from "./WeddingCard";
 
 export default function DisplayWedding({
   token,
@@ -20,134 +11,44 @@ export default function DisplayWedding({
   setWeddingId,
 }) {
   const [showAdd, setShowAdd] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
-
-  const selectWedding = (e) => {
-    API.getParties(e.target.attributes["data-id"].value, token)
-      .then((res) => {
-        setWeddingId(e.target.attributes["data-id"].value);
-        setParties(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  const handleAddClose = () => setShowAdd(false);
-  const handleEditClose = () => setShowEdit(false);
-  const handleShow = (e) => {
-    if (e.target.attributes["data-id"]) {
-      setWeddingId(e.target.attributes["data-id"].value);
-    }
-    switch (e.target.innerHTML) {
-      case "Add Wedding":
-        setShowAdd(true);
-        break;
-      case "Edit":
-        setShowEdit(true);
-        break;
-      default:
-    }
-  };
-
-  const deleteWedding = (e) => {
-    e.preventDefault();
-    if (
-      window.confirm(
-        "Are you sure you want to delete this wedding? It cannot be undone!"
-      )
-    ) {
-      API.deleteWedding(e.target.attributes["data-id"].value, token)
-        .then((res) => {
-          setParties();
-          API.getWedding(token)
-            .then((res) => {
-              setWeddings(res.data);
-            })
-            .catch((err) => console.log(err));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-
+  
   return (
-    <>
-      <Col>
-        <Button size="sm" onClick={handleShow}>
-          Add Wedding
-        </Button>
+    <div className="text-center">
+      <button
+        className="p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 rounded-lg drop-shadow-xl"
+        onClick={()=>{setShowAdd(true)}}
+      >
+        Add Wedding
+      </button>
+      <div className="p-5 grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto pb-64">
         {weddings
           ? weddings.map((item) => {
               return (
-                <Col key={item.id}>
-                  <Card data-id={item.id} key={item.id}>
-                    <Card.Title>{item.weddingName}</Card.Title>
-                    <ListGroup>
-                      <ListGroupItem>
-                        Date: {item.date ? item.date : "Not Entered"}
-                      </ListGroupItem>
-                      <ListGroupItem>Spouse: {item.spouseName1}</ListGroupItem>
-                      <ListGroupItem>Spouse: {item.spouseName2}</ListGroupItem>
-                    </ListGroup>
-                    <Card.Footer>
-                      <Button
-                        size="sm"
-                        data-id={item.id}
-                        onClick={selectWedding}
-                      >
-                        Select
-                      </Button>
-                      <Button
-                        size="sm"
-                        data-id={item.id}
-                        className="mx-auto"
-                        variant="success"
-                        onClick={handleShow}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        size="sm"
-                        data-id={item.id}
-                        onClick={deleteWedding}
-                        className="mx-auto"
-                        variant="danger"
-                      >
-                        Delete
-                      </Button>
-                    </Card.Footer>
-                  </Card>
-                </Col>
+                <WeddingCard
+                  key={item.id}
+                  id={item.id}
+                  item={item}
+                  token={token}
+                  setParties={setParties}
+                  setWeddings={setWeddings}
+                  setWeddingId={setWeddingId}
+                />
               );
             })
-          : "Create your first wedding!"}
-      </Col>
-      <Modal backdrop="static" show={showEdit} onHide={handleEditClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Wedding</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Update
-            setShowEdit={setShowEdit}
-            weddingId={weddingId}
-            token={token}
-            setWeddings={setWeddings}
-          />
-        </Modal.Body>
-      </Modal>
-      <Modal backdrop="static" show={showAdd} onHide={handleAddClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Wedding</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Wedding
+          : null}
+      </div>
+
+      {showAdd ? (
+        <>
+          <AddWedding
             setShowAdd={setShowAdd}
             token={token}
             setWeddings={setWeddings}
+            weddings={weddings}
           />
-        </Modal.Body>
-      </Modal>
-    </>
+        </>
+      ) : null}
+
+    </div>
   );
 }

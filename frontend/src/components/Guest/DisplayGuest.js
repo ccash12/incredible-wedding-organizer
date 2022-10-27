@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import API from "../../utils/API";
-import { Button } from "react-bootstrap";
 
 export default function DisplayGuest ({guests, setGuests, token, partyId}) {
     const [showAdd, setShowAdd] = useState(false);
@@ -44,9 +43,9 @@ export default function DisplayGuest ({guests, setGuests, token, partyId}) {
     };
         return(
             <>
-                <Button size="sm" onClick={handleShow}>
+                <button size="sm" onClick={handleShow}>
                     Add Guest
-                </Button>
+                </button>
             
             
             </>

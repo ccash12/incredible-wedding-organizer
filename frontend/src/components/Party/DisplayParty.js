@@ -1,119 +1,68 @@
 import React, { useState } from "react";
 import API from "../../utils/API";
-import {
-  Card,
-  Col,
-  ListGroup,
-  ListGroupItem,
-  Button,
-  Modal,
-} from "react-bootstrap";
-import Party from "./Party";
+import AddParty from "./AddParty";
+import PartyCard from "./PartyCard";
 
 export default function DisplayParty({
   parties,
   setParties,
   token,
   weddingId,
+  setWeddings,
 }) {
   const [showAdd, setShowAdd] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
-  const handleAddClose = () => setShowAdd(false);
-  const handleEditClose = () => setShowEdit(false);
-  const handleShow = (e) => {
-    switch (e.target.innerHTML) {
-      case "Add Party":
-        setShowAdd(true);
-        break;
-      case "Edit":
-        setShowEdit(true);
-        break;
-      default: 
-    }
+  const closeWedding = () => {
+    setParties();
+    API.getWedding(token)
+      .then((res) => {
+        setWeddings(res.data);
+      })
+      .catch((err) => console.log(err));
   };
-  const deleteParty = (e) => {
-    e.preventDefault();
-    if (
-      window.confirm(
-        "Are you sure you want to delete this party and everything associated with it? It cannot be undone!"
-      )
-    ) {
-      API.deleteParty(
-        e.target.attributes["data-weddingid"].value,
-        e.target.attributes["data-id"].value,
-        token
-      )
-        .then((res) => {
-          API.getParties(e.target.attributes["data-weddingid"].value, token)
-            .then((res) => {
-              setParties(res.data);
-            })
-            .catch((err) => console.log(err));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
+
   return (
-    <>
-      <Button size="sm" onClick={handleShow}>
+    <div className="text-center">
+      <button
+        className="p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 rounded-lg drop-shadow-xl"
+        onClick={() => {
+          setShowAdd(true);
+        }}
+      >
         Add Party
-      </Button>
-      {parties
-        ? parties.map((item) => {
-            return (
-              <Col key={item.id}>
-                <Card data-id={item.id} key={item.id}>
-                  <Card.Title>{item.partyName}</Card.Title>
-                  <ListGroup>
-                    <ListGroupItem>
-                      Date Invite Sent: {item.datInviteSent}
-                    </ListGroupItem>
-                    <ListGroupItem>
-                      Date RSVP Received: {item.datRSVPReceived}
-                    </ListGroupItem>
-                    <ListGroupItem>Street: {item.street1}</ListGroupItem>
-                    <ListGroupItem>Street: {item.street2}</ListGroupItem>
-                    <ListGroupItem>City: {item.city}</ListGroupItem>
-                    <ListGroupItem>State: {item.state}</ListGroupItem>
-                    <ListGroupItem>
-                      Zip/Postal Code: {item.zipcode}
-                    </ListGroupItem>
-                    <ListGroupItem>Country: {item.country}</ListGroupItem>
-                  </ListGroup>
-                  <Card.Footer>
-                    <Button size="sm" data-id={item.id} variant="success">
-                      Edit Party
-                    </Button>
-                    <Button
-                      size="sm"
-                      data-weddingid={item.weddingId}
-                      data-id={item.id}
-                      variant="danger"
-                      onClick={deleteParty}
-                    >
-                      Delete Party
-                    </Button>
-                  </Card.Footer>
-                </Card>
-              </Col>
-            );
-          })
-        : null}
-      <Modal backdrop="static" show={showAdd} onHide={handleAddClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Party</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Party
+      </button>
+      <button
+        className="p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 rounded-lg drop-shadow-xl"
+        onClick={closeWedding}
+      >
+        Close Wedding
+      </button>
+      <div className="p-5 grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto pb-64">
+        {parties
+          ? parties.map((item) => {
+              return (
+                <PartyCard
+                  key={item.id}
+                  id={item.id}
+                  item={item}
+                  token={token}
+                  setParties={setParties}
+                  weddingId={weddingId}
+                />
+              );
+            })
+          : null}
+      </div>
+
+      {showAdd ? (
+        <>
+          <AddParty
             setShowAdd={setShowAdd}
             token={token}
             setParties={setParties}
             weddingId={weddingId}
           />
-        </Modal.Body>
-      </Modal>
-    </>
+        </>
+      ) : null}
+    </div>
   );
 }
