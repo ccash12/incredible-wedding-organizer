@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import API from "./utils/API";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
-import "bootstrap/dist/css/bootstrap.css";
-import "./darkMode.css";
 import DisplayWedding from "./components/Wedding/DisplayWedding";
 import DisplayParty from "./components/Party/DisplayParty";
 import DisplayGuest from "./components/Guest/DisplayGuest";
+import Background from "./components/Background/Background";
 
 export default function App() {
   const [theme, setTheme] = useState("light");
@@ -27,19 +26,34 @@ export default function App() {
   const logout = (e) => {
     localStorage.removeItem("weddingtoken");
     setUserState({ username: "", email: "", id: "" });
+    setWeddings();
+    setParties();
+    setGuests();
+    setWeddingId();
+    setToken();
     setToken("");
   };
 
   const toggleTheme = () => {
     if (theme === "light") {
+      localStorage.theme = "dark";
       setTheme("dark");
     } else {
+      localStorage.theme = "light";
       setTheme("light");
     }
   };
 
   useEffect(() => {
-    document.body.className = theme;
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   }, [theme]);
 
   useEffect(() => {
@@ -69,37 +83,48 @@ export default function App() {
     }
   }, [token]);
   return (
-    <div className="container">
-      <div className="mx-0">
-        <button onClick={toggleTheme}> Toggle Theme </button>
+    <div className="py-10 px-5 md:p-10 h-screen bg-yellow-100 dark:bg-slate-800">
+      <Background />
+      <div className="text-center">
+        <button
+          className="m-3 p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 rounded-lg drop-shadow-xl"
+          onClick={toggleTheme}
+        >
+          {" "}
+          Toggle Theme{" "}
+        </button>
       </div>
       {!userState.firstname ? (
         <>
-          <div className="d-grid gap-2 col-6 mx-auto">
-            <button
-              className="btn btn-outline-primary btn-lg"
-              type="button"
-              onClick={() => {
-                setShowLogin(false);
-              }}
-            >
-              Signup
-            </button>
-            <button
-              className="btn btn-outline-primary btn-lg"
-              type="button"
-              onClick={() => {
-                setShowLogin(true);
-              }}
-            >
-              Login
-            </button>
+          <div className="text-center">
+            {showLogin ? (
+              <button
+                className="m-3 p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 rounded-lg drop-shadow-xl"
+                type="button"
+                onClick={() => {
+                  setShowLogin(false);
+                }}
+              >
+                Signup
+              </button>
+            ) : (
+              <button
+                className="m-3 p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 rounded-lg drop-shadow-xl"
+                type="button"
+                onClick={() => {
+                  setShowLogin(true);
+                }}
+              >
+                Login
+              </button>
+            )}
+
             {!showLogin ? (
-              <div className="col text-center">
+              <div className="">
                 <Signup setToken={setToken} setUserState={setUserState} />
               </div>
             ) : (
-              <div className="col text-center">
+              <div className="">
                 <Login setUserState={setUserState} setToken={setToken} />
               </div>
             )}
@@ -107,53 +132,53 @@ export default function App() {
         </>
       ) : null}
       {userState.firstname ? (
-        <div>
-          <div className="row">
-            <div className="text-center">
-              <button onClick={logout}>Logout</button>
-            </div>
-            <div className="text-center">
-              <h1>User Info</h1>
-            </div>
-          </div>
-          <div className="row">
-            <div className="text-center">Welcome {userState.firstname}!</div>
-          </div>
+        <div className="text-center">
+          <button
+            className="m-3 p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 rounded-lg drop-shadow-xl"
+            onClick={logout}
+          >
+            Logout
+          </button>
 
-          <div className="row">
-            <div className="col">
-              <DisplayWedding
-                token={token}
-                weddings={weddings}
-                setWeddings={setWeddings}
-                setParties={setParties}
-                weddingId={weddingId}
-                setWeddingId={setWeddingId}
-              />
-            </div>
-            <div className="col">
-              {parties ? (
-                <DisplayParty
-                  parties={parties}
-                  setParties={setParties}
-                  token={token}
-                  weddingId={weddingId}
-                />
-              ) : null}
-              <div> 
-                <DisplayGuest
-                  guests= {guests}
-                  setGuests = {setGuests}
-                  token={token}
-                  guestId= {guestId}
-
-                />
-              </div>
-            </div>
-            <div className="col">Test2</div>
-          </div>
+          <div className="">Welcome {userState.firstname}!</div>
         </div>
       ) : null}
+
+      {weddings ? (
+        <div className="">
+          <DisplayWedding
+            token={token}
+            weddings={weddings}
+            setWeddings={setWeddings}
+            setParties={setParties}
+            weddingId={weddingId}
+            setWeddingId={setWeddingId}
+          />
+        </div>
+      ) : null}
+      {parties ? (
+        <div className="">
+          <DisplayParty
+            parties={parties}
+            setParties={setParties}
+            token={token}
+            weddingId={weddingId}
+            setWeddings={setWeddings}
+          />
+        </div>
+      ) : null}
+      {guests ? (
+        <div>
+          <DisplayGuest
+            guests={guests}
+            setGuests={setGuests}
+            token={token}
+            guestId={guestId}
+          />
+        </div>
+      ) : null}
+
+      
     </div>
   );
 }
