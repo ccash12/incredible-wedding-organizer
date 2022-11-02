@@ -3,6 +3,8 @@ const { restore } = require("../../models/User");
 const { authMiddleware } = require("../../utils/auth");
 const router = require("express").Router();
 
+// create wedding
+
 router.post("/", authMiddleware, async (req, res) => {
   try {
     if (!req.body.date) {
@@ -26,6 +28,8 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
+// get logged in user's weddings
+
 router.get("/", authMiddleware, async (req, res) => {
   try {
     const userDetail = await User.findOne({
@@ -40,6 +44,8 @@ router.get("/", authMiddleware, async (req, res) => {
     res.status(400).json({ message: "an error occured", err: err });
   }
 });
+
+// get single wedding
 
 router.get("/:id", authMiddleware, async (req, res) => {
   try {
@@ -56,6 +62,8 @@ router.get("/:id", authMiddleware, async (req, res) => {
     res.status(400).json({ message: "an error occured", err: err });
   }
 });
+
+// delete single wedding
 
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
@@ -77,6 +85,8 @@ router.delete("/:id", authMiddleware, async (req, res) => {
   }
 });
 
+// add another owner to wedding
+
 router.post("/add/:id", authMiddleware, async (req, res) => {
   try {
     const findWedding = await UserWedding.findOne({
@@ -95,6 +105,8 @@ router.post("/add/:id", authMiddleware, async (req, res) => {
     res.status(400).json({ message: "an error occured", err: err });
   }
 });
+
+// update wedding
 
 router.put("/update/:id", authMiddleware, async (req, res) => {
   try {

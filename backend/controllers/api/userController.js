@@ -62,15 +62,15 @@ router.post("/signup", (req, res) => {
 
 //verify token in localstorage
 router.get("/verify", authMiddleware, (req, res) => {
-    User.findByPk(req.user.id)
-      .then((foundUser) => {
-        res.status(200).json(foundUser);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({ err: "an error occurred" });
-      });
-  });
+  User.findByPk(req.user.id)
+    .then((foundUser) => {
+      res.status(200).json(foundUser);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ err: "an error occurred" });
+    });
+});
 
 // update email, first name, or password
 router.put("/update", authMiddleware, async (req, res) => {
@@ -115,31 +115,21 @@ router.put("/update", authMiddleware, async (req, res) => {
   }
 });
 
-// router.delete("/", authMiddleware, async (req, res) => {
-//   try {
-//     const Transdelete = await Transaction.destroy({
-//       where: {
-//         UserId: req.user.id,
-//       },
-//     });
-//     if (!Transdelete) {
-//       res.status(500).json({ message: "Error deleting transactions" });
-//       return;
-//     } else {
-//       const Userdelete = await User.destroy({
-//         where: {
-//           id: req.user.id,
-//         },
-//       });
-//       if (!Userdelete) {
-//         res.status(500).json({ message: "Error deleting User" });
-//         return;
-//       }
-//     }
-//     res.status(200).json({ message: "User/Transactions deleted" });
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
+router.delete("/", authMiddleware, async (req, res) => {
+  try {
+    const userDelete = await User.destroy({
+      where: {
+        id: req.user.id,
+      },
+    });
+    if (!userDelete) {
+      res.status(500).json({ message: "Error deleting user" });
+      return;
+    }
+    res.status(200).json({ message: "User deleted" });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 module.exports = router;
