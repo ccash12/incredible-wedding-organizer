@@ -1,20 +1,22 @@
-const {Model, DataTypes} = require('sequelize');
-const sequelize = require ('../config/connection');
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../config/connection");
 
 class Gift extends Model {}
 
-Gift.init({
-
+Gift.init(
+  {
     item: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
     },
 
-    dateThankYouSent:{
-        type: DataTypes.DATE,
+    dateThankYouSent: {
+      type: DataTypes.DATE,
     },
-},{
+  },
+  {
     sequelize,
-})
+  }
+);
 
-module.exports = Gift
+module.exports = Gift;
