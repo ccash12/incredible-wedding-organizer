@@ -1,4 +1,11 @@
-const { Wedding, User, UserWedding } = require("../../models");
+const {
+  Wedding,
+  User,
+  UserWedding,
+  Party,
+  Guest,
+  Gift,
+} = require("../../models");
 const { restore } = require("../../models/User");
 const { authMiddleware } = require("../../utils/auth");
 const router = require("express").Router();
@@ -36,9 +43,10 @@ router.get("/", authMiddleware, async (req, res) => {
       where: {
         id: req.user.id,
       },
+      include: {all: true, nested: true}
     });
-    const weddings = await userDetail.getWeddings();
-    res.status(200).json(weddings);
+    // const weddings = await userDetail.getWeddings();
+    res.status(200).json(userDetail);
   } catch (err) {
     console.log(err);
     res.status(400).json({ message: "an error occured", err: err });
@@ -56,7 +64,12 @@ router.get("/:id", authMiddleware, async (req, res) => {
       res.status(404).json({ message: "No wedding found" });
       return;
     }
-    const data = await Wedding.findByPk(req.params.id);
+    const data = await Wedding.findOne({
+      where: {
+        id: req.params.id,
+      },
+      include: {all: true},
+    });
     res.status(200).json(data);
   } catch (err) {
     res.status(400).json({ message: "an error occured", err: err });
