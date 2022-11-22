@@ -2,21 +2,19 @@ import React, { useState, useEffect } from "react";
 import API from "./utils/API";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
-import DisplayWedding from "./components/Wedding/DisplayWedding";
-import DisplayParty from "./components/Party/DisplayParty";
-import DisplayGuest from "./components/Guest/DisplayGuest";
+import Home from "./components/Home/Home";
 import Background from "./components/Background/Background";
+import Navbar from "./components/Navbar/Navbar";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Profile } from "./components/Profile/Profile";
 
 export default function App() {
-  const [theme, setTheme] = useState("light");
-
   const [userState, setUserState] = useState({
     firstname: "",
     email: "",
     id: "",
   });
   const [token, setToken] = useState();
-  const [showLogin, setShowLogin] = useState(true);
   const [weddings, setWeddings] = useState();
   const [parties, setParties] = useState();
   const [weddingId, setWeddingId] = useState();
@@ -33,28 +31,6 @@ export default function App() {
     setToken();
     setToken("");
   };
-
-  const toggleTheme = () => {
-    if (theme === "light") {
-      localStorage.theme = "dark";
-      setTheme("dark");
-    } else {
-      localStorage.theme = "light";
-      setTheme("light");
-    }
-  };
-
-  useEffect(() => {
-    if (
-      localStorage.theme === "dark" ||
-      (!("theme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
 
   useEffect(() => {
     const myToken = localStorage.getItem("weddingtoken");
@@ -83,102 +59,43 @@ export default function App() {
     }
   }, [token]);
   return (
-    <div className="py-10 px-5 md:p-10 h-screen bg-yellow-100 dark:bg-slate-800">
-      <Background />
-      <div className="text-center">
-        <button
-          className="m-3 p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 rounded-lg drop-shadow-xl"
-          onClick={toggleTheme}
-        >
-          {" "}
-          Toggle Theme{" "}
-        </button>
-      </div>
-      {!userState.firstname ? (
-        <>
-          <div className="text-center">
-            {showLogin ? (
-              <button
-                className="m-3 p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 rounded-lg drop-shadow-xl"
-                type="button"
-                onClick={() => {
-                  setShowLogin(false);
-                }}
-              >
-                Signup
-              </button>
-            ) : (
-              <button
-                className="m-3 p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 rounded-lg drop-shadow-xl"
-                type="button"
-                onClick={() => {
-                  setShowLogin(true);
-                }}
-              >
-                Login
-              </button>
-            )}
-
-            {!showLogin ? (
-              <div className="">
-                <Signup setToken={setToken} setUserState={setUserState} />
-              </div>
-            ) : (
-              <div className="">
-                <Login setUserState={setUserState} setToken={setToken} />
-              </div>
-            )}
-          </div>
-        </>
-      ) : null}
-      {userState.firstname ? (
-        <div className="text-center">
-          <button
-            className="m-3 p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 rounded-lg drop-shadow-xl"
-            onClick={logout}
-          >
-            Logout
-          </button>
-
-          <div className="">Welcome {userState.firstname}!</div>
-        </div>
-      ) : null}
-
-      {weddings ? (
-        <div className="">
-          <DisplayWedding
-            token={token}
-            weddings={weddings}
-            setWeddings={setWeddings}
-            setParties={setParties}
-            weddingId={weddingId}
-            setWeddingId={setWeddingId}
+    <>
+      <BrowserRouter>
+        <Navbar userState={userState} />
+        <Routes>
+          <Route
+            path="/login"
+            element={<Login setToken={setToken} setUserState={setUserState} />}
           />
-        </div>
-      ) : null}
-      {parties ? (
-        <div className="">
-          <DisplayParty
-            parties={parties}
-            setParties={setParties}
-            token={token}
-            weddingId={weddingId}
-            setWeddings={setWeddings}
+          <Route
+            path="/signup"
+            element={<Signup setToken={setToken} setUserState={setUserState} />}
           />
-        </div>
-      ) : null}
-      {guests ? (
-        <div>
-          <DisplayGuest
-            guests={guests}
-            setGuests={setGuests}
-            token={token}
-            guestId={guestId}
+          <Route
+            path="/"
+            element={
+              <Home
+                logout={logout}
+                userState={userState}
+                parties={parties}
+                setParties={setParties}
+                token={token}
+                weddingId={weddingId}
+                setWeddingId={setWeddingId}
+                weddings={weddings}
+                setWeddings={setWeddings}
+                guests={guests}
+                setGuests={setGuests}
+                guestId={guestId}
+              />
+            }
           />
+          <Route path="profile" element={<Profile />} />
+        </Routes>
+        <div className="py-10 px-5 md:p-10 h-screen bg-yellow-100 dark:bg-slate-800">
+          <Background />
         </div>
-      ) : null}
-
-      
-    </div>
+      </BrowserRouter>
+    </>
   );
 }
