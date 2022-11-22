@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import API from "../../utils/API";
 import decode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup(props) {
   const [errorMsg, setErrorMsg] = useState();
+
+  const navigate = useNavigate();
 
   const [signupFormState, setSignupFormState] = useState({
     email: "",
@@ -52,7 +55,8 @@ export default function Signup(props) {
                 id: decoded.data.id,
               });
               props.setToken(res.data.token);
-              localStorage.setItem("token", res.data.token);
+              localStorage.setItem("weddingtoken", res.data.token);
+              navigate("/");
             })
             .catch((err) => {
               console.log(err);

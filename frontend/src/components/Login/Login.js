@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import API from "../../utils/API";
 import decode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 export default function Login(props) {
   const [errorMsg, setErrorMsg] = useState();
+  const navigate = useNavigate();
 
   const [loginFormState, setLoginFormState] = useState({
     email: "",
@@ -32,6 +34,7 @@ export default function Login(props) {
         });
         props.setToken(res.data.token);
         localStorage.setItem("weddingtoken", res.data.token);
+        navigate("/");
       })
       .catch((err) => {
         setErrorMsg("Wrong email and/or password");
@@ -94,6 +97,9 @@ export default function Login(props) {
             Submit
           </button>
         </form>
+        {/* <div>
+          Need an account <Link to="/signup">Sign up</Link>
+        </div> */}
       </div>
     </>
   );
