@@ -92,9 +92,9 @@ export default function App() {
           />
           <Route path="profile" element={<Profile />} />
         </Routes>
-        <div className="py-10 px-5 md:p-10 h-screen bg-yellow-100 dark:bg-slate-800">
+        {/* <div className="py-10 px-5 md:p-10 h-screen bg-yellow-100 dark:bg-slate-800">
           <Background />
-        </div>
+        </div> */}
       </BrowserRouter>
     </>
   );
