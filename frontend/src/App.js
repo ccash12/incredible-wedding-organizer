@@ -7,6 +7,7 @@ import Background from "./components/Background/Background";
 import Navbar from "./components/Navbar/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Profile } from "./components/Profile/Profile";
+import Timer from "./components/Timer/Timer";
 
 export default function App() {
   const [userState, setUserState] = useState({
@@ -61,6 +62,7 @@ export default function App() {
   return (
     <>
       <BrowserRouter>
+        <Timer />
         <Navbar userState={userState} />
         <Routes>
           <Route
