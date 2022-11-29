@@ -69,7 +69,7 @@ export default function WeddingCard({
             }}
             className="h-10 text-blue-500 hover:text-blue-400 cursor-pointer"
           />
-          <Timer />
+          <Timer date={item.date}/>
         </div>
         <div>
           <p>{item.weddingName}</p>
