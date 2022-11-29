@@ -5,8 +5,9 @@ const MINUTE = SECOND * 60;
 const HOUR = MINUTE * 60;
 const DAY = HOUR * 24;
 
-export const Timer = ({ deadline = "December, 31, 2022" }) => {
-    const parsedDeadline = useMemo(() => Date.parse(deadline), [deadline]);
+export const Timer = ({ date }) => {
+
+    const parsedDeadline = useMemo(() => Date.parse(date), [date]);
     const [time, setTime] = useState(parsedDeadline - Date.now());
 
     console.log(parsedDeadline);
