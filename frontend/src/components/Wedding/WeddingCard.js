@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import API from "../../utils/API";
 import UpdateWedding from "./UpdateWedding";
 import { TrashIcon, PlayIcon, PencilIcon } from "@heroicons/react/24/outline";
+import Timer from "../../components/Timer/Timer"
+
 
 export default function WeddingCard({
   id,
@@ -67,6 +69,7 @@ export default function WeddingCard({
             }}
             className="h-10 text-blue-500 hover:text-blue-400 cursor-pointer"
           />
+          <Timer />
         </div>
         <div>
           <p>{item.weddingName}</p>
