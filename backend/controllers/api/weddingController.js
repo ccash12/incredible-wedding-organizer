@@ -37,36 +37,36 @@ router.post("/", authMiddleware, async (req, res) => {
 
 // get logged in user's weddings
 
-// router.get("/", authMiddleware, async (req, res) => {
-//   try {
-//     const userDetail = await User.findOne({
-//       where: {
-//         id: req.user.id,
-//       },
-//       include: {all: true, nested: true}
-//     });
-//     // const weddings = await userDetail.getWeddings();
-//     res.status(200).json(userDetail);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(400).json({ message: "an error occured", err: err });
-//   }
-// });
-
 router.get("/", authMiddleware, async (req, res) => {
   try {
     const userDetail = await User.findOne({
       where: {
         id: req.user.id,
       },
+      include: {all: true, nested: true}
     });
-    const weddings = await userDetail.getWeddings();
-    res.status(200).json(weddings);
+    // const weddings = await userDetail.getWeddings();
+    res.status(200).json(userDetail);
   } catch (err) {
     console.log(err);
     res.status(400).json({ message: "an error occured", err: err });
   }
 });
+
+// router.get("/", authMiddleware, async (req, res) => {
+//   try {
+//     const userDetail = await User.findOne({
+//       where: {
+//         id: req.user.id,
+//       },
+//     });
+//     const weddings = await userDetail.getWeddings();
+//     res.status(200).json(weddings);
+//   } catch (err) {
+//     console.log(err);
+//     res.status(400).json({ message: "an error occured", err: err });
+//   }
+// });
 
 // get single wedding
 

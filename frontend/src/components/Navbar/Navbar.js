@@ -1,9 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../images/cakelogo.png";
 
-export default function Navbar({ userState }) {
+export default function Navbar({
+  userState,
+  setUserState,
+  setWeddings,
+  setParties,
+  setGuests,
+  setWeddingId,
+  setToken,
+}) {
   const [theme, setTheme] = useState("light");
+  const navigate = useNavigate();
+  const logout = (e) => {
+    localStorage.removeItem("weddingtoken");
+    setUserState({ username: "", email: "", id: "" });
+    setWeddings();
+    setParties();
+    setGuests();
+    setWeddingId();
+    setToken("");
+    navigate("/");
+  };
   // const [isOpen, setIsOpen] = useState("false");
 
   const toggleTheme = () => {
@@ -43,6 +62,14 @@ export default function Navbar({ userState }) {
           </div>
           <div className="hidden sm:flex flex-1 justify-end items-center gap-6">
             {userState.firstname && <Link to="/profile">Profile</Link>}
+            {userState.firstname && (
+              <button
+                className="m-3 p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 rounded-lg drop-shadow-xl"
+                onClick={logout}
+              >
+                Logout
+              </button>
+            )}
             {!userState.firstname && <Link to="/login">Login</Link>}
             {!userState.firstname && <Link to="/signup">Sign Up</Link>}
             <button

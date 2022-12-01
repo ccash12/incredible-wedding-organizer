@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddWedding from "./AddWedding";
 import WeddingCard from "./WeddingCard";
+import { useNavigate } from "react-router-dom";
 
 export default function DisplayWedding({
   token,
@@ -11,12 +12,21 @@ export default function DisplayWedding({
   setWeddingId,
 }) {
   const [showAdd, setShowAdd] = useState(false);
-  
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
+  }, [navigate,token]);
+console.log(weddings)
   return (
     <div className="text-center">
       <button
         className="p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 rounded-lg drop-shadow-xl"
-        onClick={()=>{setShowAdd(true)}}
+        onClick={() => {
+          setShowAdd(true);
+        }}
       >
         Add Wedding
       </button>
@@ -30,6 +40,7 @@ export default function DisplayWedding({
                   item={item}
                   token={token}
                   setParties={setParties}
+                  weddings={weddings}
                   setWeddings={setWeddings}
                   setWeddingId={setWeddingId}
                 />
@@ -48,7 +59,6 @@ export default function DisplayWedding({
           />
         </>
       ) : null}
-
     </div>
   );
 }

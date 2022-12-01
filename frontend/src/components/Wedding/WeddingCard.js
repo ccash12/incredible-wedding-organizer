@@ -2,30 +2,25 @@ import React, { useState } from "react";
 import API from "../../utils/API";
 import UpdateWedding from "./UpdateWedding";
 import { TrashIcon, PlayIcon, PencilIcon } from "@heroicons/react/24/outline";
-import Timer from "../../components/Timer/Timer"
-
+import Timer from "../../components/Timer/Timer";
+import { useNavigate } from "react-router-dom";
 
 export default function WeddingCard({
   id,
   item,
   token,
   setParties,
+  weddings,
   setWeddings,
   setWeddingId,
 }) {
   const [showEdit, setShowEdit] = useState(false);
+  const navigate = useNavigate();
 
   const selectWedding = (e) => {
     e.preventDefault();
-    API.getParties(id, token)
-      .then((res) => {
-        setWeddings();
-        setWeddingId(id);
-        setParties(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    setParties(item.Parties);
+    navigate("/parties");
   };
 
   const deleteWedding = (e) => {
@@ -36,15 +31,24 @@ export default function WeddingCard({
         "Are you sure you want to delete this wedding? It cannot be undone!"
       )
     ) {
+      const newWeddings = [...weddings];
+
+      const objWithIdIndex = newWeddings.findIndex((obj) => obj.id === id);
+      if (objWithIdIndex > -1) {
+        newWeddings.splice(objWithIdIndex, 1);
+
+        setWeddings(newWeddings);
+      }
       API.deleteWedding(id, token)
-        .then((res) => {
-          setParties();
-          API.getWedding(token)
-            .then((res) => {
-              setWeddings(res.data);
-            })
-            .catch((err) => console.log(err));
-        })
+        // .then((res) => {
+
+          // setParties();
+          // API.getWedding(token)
+          //   .then((res) => {
+          //     setWeddings(res.data);
+          //   })
+          //   .catch((err) => console.log(err));
+        // })
         .catch((err) => {
           console.log(err);
         });
@@ -53,7 +57,7 @@ export default function WeddingCard({
 
   return (
     <>
-      <div className="p-5 h-64 items-center rounded-md hover:scale-105 transition-all duration-100 ease-out relative space-y-4 bg-yellow-200 dark:bg-slate-400 dark:text-slate-100 shadow-md">
+      <div className="p-5 items-center rounded-md hover:scale-105 transition-all duration-100 ease-out relative space-y-4 bg-yellow-200 dark:bg-slate-400 dark:text-slate-100 shadow-md">
         <div className="flex justify-between">
           <TrashIcon
             onClick={deleteWedding}
@@ -69,7 +73,6 @@ export default function WeddingCard({
             }}
             className="h-10 text-blue-500 hover:text-blue-400 cursor-pointer"
           />
-          <Timer date={item.date}/>
         </div>
         <div>
           <p>{item.weddingName}</p>
@@ -79,6 +82,8 @@ export default function WeddingCard({
           <p>Spouse: {item.spouseName2}</p>
           <br />
           <p>Date: {item.date ? item.date : "Not Entered"}</p>
+
+          <Timer date={item.date} />
         </div>
       </div>
       {showEdit ? (
