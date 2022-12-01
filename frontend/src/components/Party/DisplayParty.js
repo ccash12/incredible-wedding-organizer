@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import API from "../../utils/API";
 import AddParty from "./AddParty";
 import PartyCard from "./PartyCard";
+import {useNavigate} from "react-router-dom"
 
 export default function DisplayParty({
   parties,
@@ -11,14 +12,19 @@ export default function DisplayParty({
   setWeddings,
 }) {
   const [showAdd, setShowAdd] = useState(false);
+  const navigate = useNavigate();
+  
   const closeWedding = () => {
     setParties();
-    API.getWedding(token)
-      .then((res) => {
-        setWeddings(res.data);
-      })
-      .catch((err) => console.log(err));
+    navigate("/weddings")
   };
+
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
+  }, [navigate,token]);
 
   return (
     <div className="text-center">
@@ -30,6 +36,7 @@ export default function DisplayParty({
       >
         Add Party
       </button>
+      &nbsp;
       <button
         className="p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 rounded-lg drop-shadow-xl"
         onClick={closeWedding}
