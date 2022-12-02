@@ -23,7 +23,7 @@ export default function Navbar({
     setToken("");
     navigate("/");
   };
-  // const [isOpen, setIsOpen] = useState("false");
+  const [isOpen, setIsOpen] = useState("false");
 
   const toggleTheme = () => {
     if (theme === "light") {
@@ -81,10 +81,80 @@ export default function Navbar({
             </button>
           </div>
           <div className="flex sm:hidden items-end flex-1 flex-col">
-            <button className="text-2xl fas fa-bars "></button>
-            {/* {userState.firstname && <Link to="/profile">Profile</Link>}
-            {!userState.firstname && <Link to="/login">Login</Link>}
-            {!userState.firstname && <Link to="/signup">Sign Up</Link>} */}
+            <button
+              className="text-2xl fas fa-bars "
+              onClick={() => {
+                setIsOpen(true);
+              }}
+            ></button>
+            {isOpen === true && (
+              <div
+                className="fixed h-full w-full top-0 right-0 left-0 bottom-0"
+                onClick={() => {
+                  setIsOpen(false);
+                }}
+              ></div>
+            )}
+            {isOpen === true && (
+              <div
+                className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="menu-button"
+                tabIndex="-1"
+                onClick={() => {
+                  setIsOpen(false);
+                }}
+              >
+                <div className="py-1" role="none">
+                  {/* <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" --> */}
+                  {userState.firstname && (
+                    <Link
+                      to="/profile"
+                      className="text-gray-700 block px-4 py-2 text-sm"
+                      role="menuitem"
+                      tabIndex="-1"
+                      id="menu-item-0"
+                    >
+                      Profile
+                    </Link>
+                  )}
+                  {!userState.firstname && (
+                    <Link
+                      to="/login"
+                      className="text-gray-700 block px-4 py-2 text-sm"
+                      role="menuitem"
+                      tabIndex="-1"
+                      id="menu-item-1"
+                    >
+                      Login
+                    </Link>
+                  )}
+                  {!userState.firstname && (
+                    <Link
+                      to="/signup"
+                      className="text-gray-700 block px-4 py-2 text-sm"
+                      role="menuitem"
+                      tabIndex="-1"
+                      id="menu-item-2"
+                    >
+                      Signup
+                    </Link>
+                  )}
+                  {userState.firstname && (
+                    <button
+                      className="text-gray-700 block w-full px-4 py-2 text-left text-sm"
+                      role="menuitem"
+                      tabIndex="-1"
+                      id="menu-item-3"
+                      onClick={logout}
+                    >
+                      Logout
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </header>
