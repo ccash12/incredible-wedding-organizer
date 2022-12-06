@@ -9,6 +9,7 @@ import DisplayParty from "./components/Party/DisplayParty";
 import Navbar from "./components/Navbar/Navbar";
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { Profile } from "./components/Profile/Profile";
+import { About } from "./components/About/About"
 
 export default function App() {
   const [userState, setUserState] = useState({
@@ -65,6 +66,7 @@ export default function App() {
             }
           />
           <Route path="profile" element={<Profile />} />
+          <Route path="About" element={<About />} />
           <Route
             path="/weddings"
             element={

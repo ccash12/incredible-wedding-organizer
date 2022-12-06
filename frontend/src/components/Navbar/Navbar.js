@@ -62,6 +62,7 @@ export default function Navbar({
           </div>
           <div className="hidden sm:flex flex-1 justify-end items-center gap-6">
             {userState.firstname && <Link to="/profile">Profile</Link>}
+            {userState.firstname && <Link to="/about">About</Link>}
             {userState.firstname && (
               <button
                 className="m-3 p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 rounded-lg drop-shadow-xl"
@@ -117,6 +118,17 @@ export default function Navbar({
                       id="menu-item-0"
                     >
                       Profile
+                    </Link>
+                  )}
+                  {userState.firstname && (
+                    <Link
+                      to="/about"
+                      className="text-gray-700 block px-4 py-2 text-sm"
+                      role="menuitem"
+                      tabIndex="-1"
+                      id="menu-item-2"
+                    >
+                      About
                     </Link>
                   )}
                   {!userState.firstname && (
