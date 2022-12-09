@@ -7,9 +7,16 @@ import Background from "./components/Background/Background";
 import DisplayWedding from "./components/Wedding/DisplayWedding";
 import DisplayParty from "./components/Party/DisplayParty";
 import Navbar from "./components/Navbar/Navbar";
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import { Profile } from "./components/Profile/Profile";
-import { About } from "./components/About/About"
+import { About } from "./components/About/About";
+import { UpdateProfile } from "./components/Profile/UpdateProfile";
 
 export default function App() {
   const [userState, setUserState] = useState({
@@ -65,7 +72,8 @@ export default function App() {
               />
             }
           />
-          <Route path="profile" element={<Profile />} />
+          <Route path="profile" element={<Profile userState={userState} />} />
+          <Route path="updateprofile" element={<UpdateProfile />} />
           <Route path="About" element={<About />} />
           <Route
             path="/weddings"

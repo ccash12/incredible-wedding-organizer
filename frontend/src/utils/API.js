@@ -19,6 +19,13 @@ const API = {
       },
     });
   },
+  update: (usrData, tkn) => {
+    return axios.put(`${URL_PREFIX}/api/user/update`, usrData, {
+      headers: {
+        Authorization: `Bearer ${tkn}`,
+      },
+    });
+  },
   createWedding: (data, tkn) => {
     return axios.post(`${URL_PREFIX}/api/wedding`, data, {
       headers: {
