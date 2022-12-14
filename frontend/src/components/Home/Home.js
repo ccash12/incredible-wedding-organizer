@@ -1,25 +1,14 @@
 import React, { useEffect } from "react";
 import API from "../../utils/API";
-import DisplayWedding from "../Wedding/DisplayWedding";
-import DisplayParty from "../Party/DisplayParty";
-import DisplayGuest from "../Guest/DisplayGuest";
 import { useNavigate } from "react-router-dom";
 import heroImage from "../../images/wedding-rings.jpg";
 
-function Home({
+export default function Home({
   userState,
   setUserState,
-  parites,
-  setParties,
   token,
   setToken,
-  weddingId,
-  setWeddingId,
-  weddings,
   setWeddings,
-  guests,
-  setGuests,
-  guestId,
 }) {
   const navigate = useNavigate();
 
@@ -52,7 +41,7 @@ function Home({
   }, [token]);
 
   return (
-    <div>
+    <div className="dark:bg-gray-700 bg-gray-200">
       {!userState.firstname ? (
         <section className="relative">
           <div className="container flex flex-col-reverse lg:flex-row items-center gap-12 mt-14 lg:mt-28">
@@ -97,26 +86,6 @@ function Home({
           <div className="hidden md:block overflow-hidden bg-purple-200 rounded-l-full absolute h-80 w-2/4 top-32 right-0 lg:-bottom-28 lg:-right-36"></div>
         </section>
       ) : null}
-
-      {userState.firstname ? (
-        <div className="text-center">
-          <div className="">Welcome {userState.firstname}!</div>
-        </div>
-      ) : null}
-      {/* {weddings ? navigate("/weddings") : null} */}
-      {/* {parties ? navigate("/parties") : null} */}
-      {/* {guests ? (
-        <div>
-          <DisplayGuest
-            guests={guests}
-            setGuests={setGuests}
-            token={token}
-            guestId={guestId}
-          />
-        </div>
-      ) : null} */}
     </div>
   );
 }
-
-export default Home;

@@ -68,6 +68,13 @@ const API = {
       },
     });
   },
+  updateParty: (data, weddingId, partyId, tkn) => {
+    return axios.put(`${URL_PREFIX}/api/party/${weddingId}/${partyId}`, data, {
+      headers: {
+        Authorization: `Bearer ${tkn}`,
+      },
+    });
+  },
   deleteParty: (weddingId, partyId, tkn) => {
     return axios.delete(`${URL_PREFIX}/api/party/${weddingId}/${partyId}`, {
       headers: {

@@ -1,10 +1,21 @@
 import React, { useState } from "react";
 import API from "../../utils/API";
 import UpdateParty from "./UpdateParty";
+import GuestGiftCard from "./GuestGiftCard";
 import { TrashIcon, PlayIcon, PencilIcon } from "@heroicons/react/24/outline";
 
-export default function PartyCard({ id, item, token, setParties, weddingId }) {
+export default function PartyCard({
+  id,
+  item,
+  token,
+  parties,
+  setParties,
+  weddingId,
+  weddings,
+  setWeddings,
+}) {
   const [showEdit, setShowEdit] = useState(false);
+  const [showSelect, setShowSelect] = useState(false);
   const deleteParty = (e) => {
     e.preventDefault();
     if (
@@ -12,63 +23,74 @@ export default function PartyCard({ id, item, token, setParties, weddingId }) {
         "Are you sure you want to delete this party and everything associated with it? It cannot be undone!"
       )
     ) {
-      API.deleteParty(weddingId, id, token)
-        .then((res) => {
-          API.getParties(weddingId, token)
-            .then((res) => {
-              setParties(res.data);
-            })
-            .catch((err) => console.log(err));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      let newWeddings = [...weddings];
+      const objWithIdIndex = newWeddings.findIndex(
+        (obj) => obj.id === weddingId
+      );
+      if (objWithIdIndex > -1) {
+        const partyWithIdIndex = newWeddings[objWithIdIndex].Parties.findIndex(
+          (obj) => obj.id === id
+        );
+
+        if (partyWithIdIndex > -1) {
+          newWeddings[objWithIdIndex].Parties.splice(partyWithIdIndex, 1);
+          const newParties = [...parties];
+          newParties.splice(partyWithIdIndex, 1);
+          setParties(newParties);
+        }
+      }
+      setWeddings(newWeddings);
+      API.deleteParty(weddingId, id, token).catch((err) => {
+        console.log(err);
+      });
     }
   };
 
   return (
     <>
-      <div className="p-5 items-center rounded-md hover:scale-105 transition-all duration-100 ease-out relative space-y-4 bg-yellow-200 dark:bg-slate-400 dark:text-slate-100 shadow-md">
+      <div className="relative items-center p-5 space-y-4 transition-all duration-100 ease-out bg-yellow-200 rounded-md shadow-md hover:scale-105 dark:bg-slate-400 dark:text-slate-100">
         <div className="flex justify-between">
           <TrashIcon
             onClick={deleteParty}
-            className="h-10 text-red-500 hover:text-yellow-400 cursor-pointer"
+            className="h-10 text-red-500 cursor-pointer hover:text-yellow-400"
           />
           <PlayIcon
-            // onClick={selectParty}
-            className="h-10 text-green-500 hover:text-green-400 cursor-pointer"
+            onClick={() => console.log(item)}
+            className="h-10 text-green-500 cursor-pointer hover:text-green-400"
           />
           <PencilIcon
             onClick={() => {
               setShowEdit(true);
             }}
-            className="h-10 text-blue-500 hover:text-blue-400 cursor-pointer"
+            className="h-10 text-blue-500 cursor-pointer hover:text-blue-400"
           />
         </div>
         <div>
           <p>{item.partyName}</p>
         </div>
         <div>
-          <p>Date Invite Sent: {item.dateInviteSent}</p>
-          <p>Date RSVP Received: {item.dateRSVPReceived}</p>
-          <p>Street: {item.street1}</p>
-          <p>Street: {item.street2}</p>
-          <p>City: {item.city}</p>
-          <p>State: {item.state}</p>
-          <p>Zip/Postal Code: {item.zipcode}</p>
-          <p>Country: {item.country}</p>
+          <p>Date Invite Sent: {item.dateInviteSent ? item.dateInviteSent : 'Not Sent'}</p>
+          <p>Date RSVP Received: {item.dateRSVPReceived ? item.dateRSVPReceived : 'Not Received'}</p>
+          <br/>
+          <p>{item.street1}</p>
+          {item.street2 && <p>{item.street2}</p>}
+          <p>
+            {item.city} {item.state}, {item.zipcode}
+          </p>
+          {item.country && <p>{item.country}</p>}
+          <br />
+          
         </div>
       </div>
-      {showEdit ? (
-        <>
-          <UpdateParty
-            setShowEdit={setShowEdit}
-            weddingId={id}
-            token={token}
-            setParties={setParties}
-          />
-        </>
-      ) : null}
+      {showEdit && (
+        <UpdateParty
+          setShowEdit={setShowEdit}
+          weddingId={id}
+          token={token}
+          setParties={setParties}
+        />
+      )}
+      
     </>
   );
 }
