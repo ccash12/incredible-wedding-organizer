@@ -25,7 +25,7 @@ export const UpdateProfile = () => {
           <label htmlFor="updateProfile" className="font-bold text-xl">
             Update Profile
           </label>
-          <div className="form-floating mt-6 mb-3">
+          <div className="form-floating mt-6 mb-3 xl:w-96">
             <input
               type="text"
               className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white dark:bg-slate-600 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 dark:text-slate-200 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -43,7 +43,7 @@ export const UpdateProfile = () => {
               Email:
             </label>
           </div>
-          <div className="form-floating mb-3">
+          <div className="form-floating mb-3 xl:w-96">
             <input
               type="text"
               className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white dark:bg-slate-600 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 dark:text-slate-200 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -60,7 +60,7 @@ export const UpdateProfile = () => {
               Password:
             </label>
           </div>
-          <div className="form-floating mb-3">
+          <div className="form-floating mb-3 ">
             <input
               type="text"
               className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white dark:bg-slate-600 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 dark:text-slate-200 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
