@@ -49,7 +49,7 @@ export default function Navbar({
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-white">
+      <header className="sticky top-0 z-50 bg-gray-200 dark:bg-gray-700">
         <div className="p-4 flex items-center justify-between">
           <div className="py-1">
             <Link to="/">

@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
-import API from "./utils/API";
+import React, { useState } from "react";
+// import API from "./utils/API";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
 import Home from "./components/Home/Home";
-import Background from "./components/Background/Background";
+// import Background from "./components/Background/Background";
 import DisplayWedding from "./components/Wedding/DisplayWedding";
 import DisplayParty from "./components/Party/DisplayParty";
 import Navbar from "./components/Navbar/Navbar";
+
 import {
   BrowserRouter,
   Routes,
@@ -17,6 +18,7 @@ import {
 import { Profile } from "./components/Profile/Profile";
 import { About } from "./components/About/About";
 import { UpdateProfile } from "./components/Profile/UpdateProfile";
+
 
 export default function App() {
   const [userState, setUserState] = useState({
@@ -32,7 +34,7 @@ export default function App() {
   const [guests, setGuests] = useState();
 
   return (
-    <>
+    <div className="dark:bg-gray-700">
       <BrowserRouter>
         <Navbar
           userState={userState}
@@ -58,17 +60,9 @@ export default function App() {
               <Home
                 userState={userState}
                 setUserState={setUserState}
-                parties={parties}
-                setParties={setParties}
                 token={token}
                 setToken={setToken}
-                weddingId={weddingId}
-                setWeddingId={setWeddingId}
-                weddings={weddings}
                 setWeddings={setWeddings}
-                guests={guests}
-                setGuests={setGuests}
-                guestId={guestId}
               />
             }
           />
@@ -83,7 +77,6 @@ export default function App() {
                 weddings={weddings}
                 setWeddings={setWeddings}
                 setParties={setParties}
-                weddingId={weddingId}
                 setWeddingId={setWeddingId}
               />
             }
@@ -96,6 +89,7 @@ export default function App() {
                 setParties={setParties}
                 token={token}
                 weddingId={weddingId}
+                weddings={weddings}
                 setWeddings={setWeddings}
               />
             }
@@ -105,6 +99,6 @@ export default function App() {
           <Background />
         </div> */}
       </BrowserRouter>
-    </>
+    </div>
   );
 }

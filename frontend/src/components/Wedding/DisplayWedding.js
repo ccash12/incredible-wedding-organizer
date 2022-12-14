@@ -8,7 +8,6 @@ export default function DisplayWedding({
   weddings,
   setWeddings,
   setParties,
-  weddingId,
   setWeddingId,
 }) {
   const [showAdd, setShowAdd] = useState(false);
@@ -18,47 +17,45 @@ export default function DisplayWedding({
     if (!token) {
       navigate("/");
     }
-  }, [navigate,token]);
-console.log(weddings)
+  }, [navigate, token]);
   return (
-    <div className="text-center">
+    <div className="text-center bg-gray-200 dark:bg-gray-700">
       <button
-        className="p-1 hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 rounded-lg drop-shadow-xl"
+        className="p-1 rounded-lg hover:scale-105 hover:text-white bg-sky-300 dark:bg-blue-700 dark:text-slate-100 drop-shadow-xl"
         onClick={() => {
           setShowAdd(true);
         }}
       >
         Add Wedding
       </button>
-      <div className="p-5 grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto pb-64">
-        {weddings
-          ? weddings.map((item) => {
-              return (
-                <WeddingCard
-                  key={item.id}
-                  id={item.id}
-                  item={item}
-                  token={token}
-                  setParties={setParties}
-                  weddings={weddings}
-                  setWeddings={setWeddings}
-                  setWeddingId={setWeddingId}
-                />
-              );
-            })
-          : null}
+      <div
+        className="flex flex-wrap justify-center gap-5 m-5 hover:flex-1"
+      >
+        {weddings &&
+          weddings.map((item, index) => {
+            return (
+              <WeddingCard
+                key={index}
+                id={item.id}
+                item={item}
+                token={token}
+                setParties={setParties}
+                weddings={weddings}
+                setWeddings={setWeddings}
+                setWeddingId={setWeddingId}
+              />
+            );
+          })}
       </div>
 
-      {showAdd ? (
-        <>
-          <AddWedding
-            setShowAdd={setShowAdd}
-            token={token}
-            setWeddings={setWeddings}
-            weddings={weddings}
-          />
-        </>
-      ) : null}
+      {showAdd && (
+        <AddWedding
+          setShowAdd={setShowAdd}
+          token={token}
+          setWeddings={setWeddings}
+          weddings={weddings}
+        />
+      )}
     </div>
   );
 }
