@@ -1,40 +1,42 @@
-const {Model, DataTypes} = require('sequelize');
-const sequelize = require ('../config/connection');
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../config/connection");
 
 class Party extends Model {}
 
-Party.init({
+Party.init(
+  {
     partyName: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     dateInviteSent: {
-        type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
     },
     dateRSVPReceived: {
-        type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
     },
     street1: {
-        type: DataTypes.STRING,
+      type: DataTypes.STRING,
     },
     street2: {
-        type: DataTypes.STRING,
+      type: DataTypes.STRING,
     },
     city: {
-        type: DataTypes.STRING,
+      type: DataTypes.STRING,
     },
     state: {
-        type: DataTypes.STRING,
+      type: DataTypes.STRING,
     },
     zipcode: {
-        type: DataTypes.STRING,
+      type: DataTypes.STRING,
     },
     country: {
-        type: DataTypes.STRING,
-    }
-
-},{
+      type: DataTypes.STRING,
+    },
+  },
+  {
     sequelize,
-})
+  }
+);
 
-module.exports = Party
+module.exports = Party;
