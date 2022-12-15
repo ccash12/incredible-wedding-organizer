@@ -74,38 +74,30 @@ router.get("/verify", authMiddleware, (req, res) => {
 
 // update email, first name, or password
 router.put("/update", authMiddleware, async (req, res) => {
-  if (req.body.email) {
-    User.update({ email: req.body.email }, { where: { email: req.user.email } })
-      .then((update) => {
-        res.status(200).json(update);
-      })
-      .catch((err) => {
-        res.status(500).json(err);
-      });
-  }
-  if (req.body.firstname) {
-    User.update(
-      { firstname: req.body.firstname },
-      { where: { email: req.user.email } }
-    )
-      .then((update) => {
-        res.status(200).json(update);
-      })
-      .catch((err) => {
-        res.status(500).json(err);
-      });
-  }
+  try {
+    if (req.body.email) {
+      User.update(
+        { email: req.body.email },
+        { where: { email: req.user.email } }
+      );
+    }
+    if (req.body.firstname) {
+      User.update(
+        { firstname: req.body.firstname },
+        { where: { email: req.user.email } }
+      );
+    }
+    if (req.body.password) {
+      const newPassword = await bcrypt.hash(req.body.password, 10);
 
-  if (req.body.password) {
-    const newPassword = await bcrypt.hash(req.body.password, 10);
-
-    User.update({ password: newPassword }, { where: { email: req.user.email } })
-      .then((update) => {
-        res.status(200).json(update);
-      })
-      .catch((err) => {
-        res.status(500).json(err);
-      });
+      User.update(
+        { password: newPassword },
+        { where: { email: req.user.email } }
+      );
+    }
+    res.status(200).json({ message: "updated" });
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
 
