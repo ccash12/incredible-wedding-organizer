@@ -76,13 +76,13 @@ router.get("/verify", authMiddleware, (req, res) => {
 router.put("/update", authMiddleware, async (req, res) => {
   try {
     if (req.body.email) {
-      User.update(
+      await User.update(
         { email: req.body.email },
         { where: { email: req.user.email } }
       );
     }
     if (req.body.firstname) {
-      User.update(
+      await User.update(
         { firstname: req.body.firstname },
         { where: { email: req.user.email } }
       );
@@ -90,12 +90,19 @@ router.put("/update", authMiddleware, async (req, res) => {
     if (req.body.password) {
       const newPassword = await bcrypt.hash(req.body.password, 10);
 
-      User.update(
+      await User.update(
         { password: newPassword },
         { where: { email: req.user.email } }
       );
     }
-    res.status(200).json({ message: "updated" });
+    User.findOne({
+      where: {
+        email: req.body.email,
+      },
+    }).then((foundUser)=>{
+      const token = signToken(foundUser);
+      res.status(200).json({ token, message: "updated" });
+    })
   } catch (err) {
     res.status(500).json(err);
   }
