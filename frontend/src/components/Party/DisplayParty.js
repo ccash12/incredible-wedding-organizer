@@ -86,12 +86,19 @@ export default function DisplayParty({
                       {item.country && <p>{item.country}</p>}
                     </td>
                     <td>
-                    {item.Guests
+                      {item.Guests
                         ? item.Guests.map((guest) => {
-                          {guest.Gifts ? guest.Gifts.map((gift)=>{
-                              return (<p key={gift.id}>{gift.item}</p>)
-                          }) : (<p>No Gifts</p>)}
-
+                            return (
+                              <span key={guest.id}>
+                                {guest.Gifts ? (
+                                  guest.Gifts.map((gift) => {
+                                    return <p key={gift.id}>{gift.item}</p>;
+                                  })
+                                ) : (
+                                  <p>No Gifts</p>
+                                )}
+                              </span>
+                            );
                           })
                         : "No Gifts"}
                     </td>
