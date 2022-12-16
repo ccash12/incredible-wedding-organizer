@@ -19,7 +19,6 @@ import { Profile } from "./components/Profile/Profile";
 import { About } from "./components/About/About";
 import { UpdateProfile } from "./components/Profile/UpdateProfile";
 
-
 export default function App() {
   const [userState, setUserState] = useState({
     firstname: "",
@@ -67,7 +66,16 @@ export default function App() {
             }
           />
           <Route path="profile" element={<Profile userState={userState} />} />
-          <Route path="updateprofile" element={<UpdateProfile />} />
+          <Route
+            path="/updateprofile"
+            element={
+              <UpdateProfile
+                token={token}
+                setToken={setToken}
+                setUserState={setUserState}
+              />
+            }
+          />
           <Route path="About" element={<About />} />
           <Route
             path="/weddings"
