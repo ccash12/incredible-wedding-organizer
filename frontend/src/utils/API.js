@@ -6,6 +6,7 @@ const URL_PREFIX = "http://localhost:3001";
 
 const API = {
   // user section
+  
   login: (usrData) => {
     return axios.post(`${URL_PREFIX}/api/user/login`, usrData);
   },
@@ -26,6 +27,9 @@ const API = {
       },
     });
   },
+
+  //wedding section
+
   createWedding: (data, tkn) => {
     return axios.post(`${URL_PREFIX}/api/wedding`, data, {
       headers: {
@@ -61,6 +65,8 @@ const API = {
       },
     });
   },
+  //party section
+
   getParties: (id, tkn) => {
     return axios.get(`${URL_PREFIX}/api/party/${id}`, {
       headers: {
@@ -84,6 +90,16 @@ const API = {
   },
   deleteParty: (weddingId, partyId, tkn) => {
     return axios.delete(`${URL_PREFIX}/api/party/${weddingId}/${partyId}`, {
+      headers: {
+        Authorization: `Bearer ${tkn}`,
+      },
+    });
+  },
+
+  //guest section
+
+  createGuest: (data, weddingId, partyId, tkn) => {
+    return axios.post(`${URL_PREFIX}/api/guest/${weddingId}/${partyId}`, data, {
       headers: {
         Authorization: `Bearer ${tkn}`,
       },

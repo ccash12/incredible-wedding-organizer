@@ -44,10 +44,10 @@ router.put("/:weddingId/:partyId", authMiddleware, async (req, res) => {
       res.status(404).json({ message: "No wedding found" });
       return;
     }
-    if (!req.body.dateInviteSent) {
+    if (req.body.dateInviteSent === "") {
       req.body.dateInviteSent = null;
     }
-    if (!req.body.dateRSVPReceived) {
+    if (req.body.dateRSVPReceived === "") {
       req.body.dateRSVPReceived = null;
     }
     const partyUpdate = await Party.update(req.body, {
@@ -55,7 +55,11 @@ router.put("/:weddingId/:partyId", authMiddleware, async (req, res) => {
         id: req.params.partyId,
       },
     });
-    res.status(200).json(partyUpdate);
+    if (partyUpdate) {
+      res.status(200).json(partyUpdate);
+    } else {
+      res.status(500).json({ message: "error, not updated" });
+    }
   } catch (err) {
     res.status(500).json({ message: "error", err: err });
   }
