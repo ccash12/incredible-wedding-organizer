@@ -65,6 +65,7 @@ export default function QuickEdit({
   };
 
   useEffect(() => {
+    
     const result = parties.findIndex((obj) => {
       return obj.id == quickEditTarget.partyId;
     });
@@ -72,6 +73,7 @@ export default function QuickEdit({
       case "Party Name":
         setFormData("partyName");
         setFormState({ partyName: parties[result].partyName });
+        
         break;
       case "Date Invite Sent":
         setFormData("dateInviteSent");
@@ -106,7 +108,8 @@ export default function QuickEdit({
         break;
       default:
     }
-  }, [quickEditTarget, formData, parties]);
+   
+  },[setFormState]);
 
   return (
     <>
@@ -123,7 +126,7 @@ export default function QuickEdit({
             />
           </div>
           <div className="mt-6 mb-3 form-floating xl:w-96">
-            {quickEditTarget.item === "Party Name" && (
+            {formData === "partyName" && (
               <>
                 <div>Party Name</div>
                 <input
@@ -138,7 +141,7 @@ export default function QuickEdit({
                 />
               </>
             )}
-            {quickEditTarget.item === "Date Invite Sent" && (
+            {formData === "dateInviteSent" && (
               <>
                 <div>Date Invite Sent</div>
                 <input
@@ -147,11 +150,11 @@ export default function QuickEdit({
                   id="dateInviteSent"
                   name="dateInviteSent"
                   onChange={handleFormChange}
-                  value={formState?.dateInviteSent}
+                  value={formState.dateInviteSent}
                 />
               </>
             )}
-            {quickEditTarget.item === "Date RSVP Received" && (
+            {formData === "dateRSVPReceived" && (
               <>
                 <div>Date RSVP Received</div>
                 <input
@@ -160,11 +163,11 @@ export default function QuickEdit({
                   id="dateRSVPReceived"
                   name="dateRSVPReceived"
                   onChange={handleFormChange}
-                  value={formState?.dateRSVPReceived}
+                  value={formState.dateRSVPReceived}
                 />
               </>
             )}
-            {quickEditTarget.item === "Address" && (
+            {formData === "address" && (
               <>
                 <div className="mb-3 form-floating">
                   <input
@@ -270,7 +273,7 @@ export default function QuickEdit({
                 </div>
               </>
             )}
-            {quickEditTarget.item === "AddGuest" && (
+            {formData === "addGuest" && (
               <>
                 <div className="mb-3 form-floating">
                   <input
