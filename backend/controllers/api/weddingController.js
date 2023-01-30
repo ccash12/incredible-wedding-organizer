@@ -43,7 +43,7 @@ router.get("/", authMiddleware, async (req, res) => {
       where: {
         id: req.user.id,
       },
-      include: {all: true, nested: true}
+      include: { all: true, nested: true },
     });
     // const weddings = await userDetail.getWeddings();
     res.status(200).json(userDetail);
@@ -144,6 +144,9 @@ router.put("/update/:id", authMiddleware, async (req, res) => {
     if (!findWedding) {
       res.status(404).json({ message: "No wedding found" });
       return;
+    }
+    if (req.body.date === "") {
+      req.body.date = null;
     }
     const update = await Wedding.update(req.body, {
       where: {
