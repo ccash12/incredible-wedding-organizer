@@ -47,6 +47,8 @@ export default function DisplayParty({
     }
   }, [navigate, token]);
 
+  useEffect(() => {}, [setQuickEditTarget]);
+
   return (
     <div className="text-center">
       <button
@@ -65,7 +67,7 @@ export default function DisplayParty({
         Close Wedding
       </button>
       <div className="hidden overflow-auto rounded-lg shadow md:block">
-        <table onClick={test} className="w-full">
+        <table className="w-full">
           <thead className="border-b-2 border-gray-200 bg-gray-50">
             <tr>
               <th>Party Name</th>
@@ -83,55 +85,89 @@ export default function DisplayParty({
               parties.map((item) => {
                 return (
                   <tr key={item.id}>
-                    <td
-                      data-party-id={item.id}
-                      data-item="Party Name"
-                      className="dark:hover:text-white hover:text-sky-800 hover:cursor-pointer"
-                    >
-                      {item.partyName}
+                    <td>
+                      <p
+                        onClick={test}
+                        data-party-id={item.id}
+                        data-item="Party Name"
+                        className="hover:cursor-pointer dark:hover:text-white hover:text-sky-800"
+                      >
+                        {item.partyName}
+                      </p>
                     </td>
-                    <td
-                      data-party-id={item.id}
-                      data-item="Date Invite Sent"
-                      className="dark:hover:text-white hover:text-sky-800 hover:cursor-pointer"
-                    >
-                      {item.dateInviteSent ? item.dateInviteSent : "Not Sent"}
+                    <td>
+                      <p
+                        onClick={test}
+                        data-party-id={item.id}
+                        data-item="Date Invite Sent"
+                        className="dark:hover:text-white hover:text-sky-800 hover:cursor-pointer"
+                      >
+                        {item.dateInviteSent ? item.dateInviteSent : "Not Sent"}
+                      </p>
                     </td>
-                    <td
-                      data-party-id={item.id}
-                      data-item="Date RSVP Received"
-                      className="dark:hover:text-white hover:text-sky-800 hover:cursor-pointer"
-                    >
-                      {item.dateRSVPReceived
-                        ? item.dateRSVPReceived
-                        : "Not Received"}
+                    <td>
+                      <p
+                        onClick={test}
+                        data-party-id={item.id}
+                        data-item="Date RSVP Received"
+                        className="dark:hover:text-white hover:text-sky-800 hover:cursor-pointer"
+                      >
+                        {item.dateRSVPReceived
+                          ? item.dateRSVPReceived
+                          : "Not Received"}
+                      </p>
                     </td>
 
-                    <td className="dark:hover:text-white hover:text-sky-800 hover:cursor-pointer">
+                    <td>
                       {!item.street1 &&
                       !item.street2 &&
                       !item.city &&
                       !item.state &&
                       !item.zipcode &&
                       !item.country ? (
-                        <p data-party-id={item.id} data-item="Address">
+                        <p
+                          className="dark:hover:text-white hover:text-sky-800 hover:cursor-pointer"
+                          onClick={test}
+                          data-party-id={item.id}
+                          data-item="Address"
+                        >
                           Add an address
                         </p>
                       ) : (
                         <>
-                          <p data-party-id={item.id} data-item="Address">
+                          <p
+                            className="dark:hover:text-white hover:text-sky-800 hover:cursor-pointer"
+                            onClick={test}
+                            data-party-id={item.id}
+                            data-item="Address"
+                          >
                             {item.street1}
                           </p>
                           {item.street2 && (
-                            <p data-party-id={item.id} data-item="Address">
+                            <p
+                              className="dark:hover:text-white hover:text-sky-800 hover:cursor-pointer"
+                              onClick={test}
+                              data-party-id={item.id}
+                              data-item="Address"
+                            >
                               {item.street2}
                             </p>
                           )}
-                          <p data-party-id={item.id} data-item="Address">
+                          <p
+                            className="dark:hover:text-white hover:text-sky-800 hover:cursor-pointer"
+                            onClick={test}
+                            data-party-id={item.id}
+                            data-item="Address"
+                          >
                             {item.city} {item.state}, {item.zipcode}
                           </p>
                           {item.country && (
-                            <p data-party-id={item.id} data-item="Address">
+                            <p
+                              className="dark:hover:text-white hover:text-sky-800 hover:cursor-pointer"
+                              onClick={test}
+                              data-party-id={item.id}
+                              data-item="Address"
+                            >
                               {item.country}
                             </p>
                           )}{" "}
@@ -143,6 +179,7 @@ export default function DisplayParty({
                         ? item.Guests.map((guest) => {
                             return (
                               <p
+                                onClick={test}
                                 className="dark:hover:text-white hover:text-sky-800 hover:cursor-pointer"
                                 data-party-id={item.id}
                                 data-guest-id={guest.id}
@@ -155,12 +192,19 @@ export default function DisplayParty({
                           })
                         : "No Guests"}
                       <div className="flex justify-center">
-                        <p className="hidden w-6 h-6 transition duration-500 group-hover:block">
-                          <PlusIcon
+                        <p
+                          onClick={test}
+                          data-party-id={item.id}
+                          data-item="AddGuest"
+                          className="hidden w-6 h-6 transition duration-500 group-hover:block hover:cursor-pointer dark:hover:text-white hover:text-sky-800"
+                        >
+                          {/* <PlusIcon
+                            onClick={test}
                             data-party-id={item.id}
                             data-item="AddGuest"
                             className="dark:hover:text-white hover:text-sky-800"
-                          />
+                          /> */}
+                          +
                         </p>
                       </div>
                     </td>
@@ -173,6 +217,7 @@ export default function DisplayParty({
                                   ? guest.Gifts.map((gift) => {
                                       return (
                                         <p
+                                          onClick={test}
                                           className="dark:hover:text-white hover:text-sky-800 hover:cursor-pointer"
                                           data-party-id={item.id}
                                           data-guest-id={guest.id}
@@ -192,19 +237,16 @@ export default function DisplayParty({
                         : "No Gifts"}
                     </td>
                     <td>
-                  
-                        <div className="flex justify-between">
-                          <PlayIcon
-                            // onClick={selectWedding}
-                            className="h-6 text-green-500 cursor-pointer hover:text-green-400"
-                          />
-                          <TrashIcon
-                            // onClick={deleteWedding}
-                            className="h-6 text-red-500 cursor-pointer hover:text-yellow-400"
-                          />
-                          
-                        </div>
-                      
+                      <div className="flex justify-between">
+                        <PlayIcon
+                          // onClick={selectWedding}
+                          className="h-6 text-green-500 cursor-pointer hover:text-green-400"
+                        />
+                        <TrashIcon
+                          // onClick={deleteWedding}
+                          className="h-6 text-red-500 cursor-pointer hover:text-yellow-400"
+                        />
+                      </div>
                     </td>
                   </tr>
                 );

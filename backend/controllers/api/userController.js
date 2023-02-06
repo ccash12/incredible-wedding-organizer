@@ -1,4 +1,4 @@
-const { User } = require("../../models");
+const { User, UserWedding, Wedding } = require("../../models");
 const { authMiddleware, signToken } = require("../../utils/auth");
 const bcrypt = require("bcrypt");
 const router = require("express").Router();
@@ -99,10 +99,10 @@ router.put("/update", authMiddleware, async (req, res) => {
       where: {
         email: req.body.email,
       },
-    }).then((foundUser)=>{
+    }).then((foundUser) => {
       const token = signToken(foundUser);
       res.status(200).json({ token, message: "updated" });
-    })
+    });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -110,16 +110,36 @@ router.put("/update", authMiddleware, async (req, res) => {
 
 router.delete("/", authMiddleware, async (req, res) => {
   try {
-    const userDelete = await User.destroy({
+    await UserWedding.findAll({
       where: {
-        id: req.user.id,
+        userId: req.user.id,
       },
-    });
-    if (!userDelete) {
-      res.status(500).json({ message: "Error deleting user" });
-      return;
-    }
-    res.status(200).json({ message: "User deleted" });
+    })
+      .then(async (results) => {
+        results.map(async (item) => {
+          const { count } = await UserWedding.findAndCountAll({
+            where: {
+              weddingId: item.dataValues.weddingId,
+            },
+          });
+          if (count === 1) {
+            await Wedding.destroy({
+              where: { id: item.dataValues.weddingId },
+            }).catch((err) => {
+              console.log(err);
+            });
+          }
+        });
+        await User.destroy({
+          where: { id: req.user.id },
+        }).catch((err) => {
+          console.log(err);
+        });
+        res.status(200).json({ message: "success" });
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
   } catch (err) {
     res.status(500).json(err);
   }
