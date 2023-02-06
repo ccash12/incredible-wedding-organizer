@@ -10,6 +10,14 @@ const seedUserWedding = async () => {
       userId: 2,
       weddingId: 2,
     },
+    {
+      userId: 2,
+      weddingId: 3,
+    },
+    {
+      userId: 1,
+      weddingId: 3,
+    },
   ]);
 };
 
