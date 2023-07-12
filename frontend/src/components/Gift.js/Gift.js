@@ -2,17 +2,9 @@ import React, { useState } from "react";
 import API from "../../utils/API";
 import { Button } from "react-bootstrap";
 
-export default function Gift ({guests, setGuests,token, partyId, setShowAdd }) {
+export default function Gift ({gifts, setGifts,token, partyId, setShowAdd }) {
     const [form, setForm] = useState({ 
-        guestName:"",
-        meal:"",
-        seat: "",
-        street1: "",
-        street2:"",
-        city:"",
-        state:"",
-        zipcode: "",
-        country: "",
+        gift:"",
     });
 
     const handleFormChange = (e) => {
@@ -23,170 +15,37 @@ export default function Gift ({guests, setGuests,token, partyId, setShowAdd }) {
         });
     };
 
-    const guestFormSubmit = (e) => {
+    const giftFormSubmit = (e) => {
         e.preventDefault();
 
-        API.createGuest(form, weddingId, Token)
+        API.createGift(form, weddingId, Token)
             .then((res) => {
-                setGuests(res.data);
+                setGifts(res.data);
                 setShowAdd(false);
             })
             .catch((err) => {
                 console.log(err);
             });
         setForm({
-            guestName:"",
-            meal:"",
-            seat: "",
-            street1: "",
-            street2:"",
-            city:"",
-            state:"",
-            zipcode: "",
-            country: "",
+            gift:"",
+            
         })
     } 
     return (
-        <form id="addGuest" onSubmit={guestFormSubmit}>
+        <form id="addGift" onSubmit={giftFormSubmit}>
             <div>
                 <input 
                     type = "text"
-                    id="guestName"
-                    name="guestName"
-                    value={form.guestName}
+                    id="giftName"
+                    name="Gift"
+                    value={form.giftName}
                     onChange={handleFormChange}
-                    placeholder="Guest Name"
+                    placeholder="Gift"
                     required
                 />
                 <label className="form-label"> 
-                    Guest Name*
+                    Gift
                 </label>
-            </div>
-            <div>
-                <label className="form-label"> 
-                    Meal
-                </label>
-                <input 
-                    type = "text"
-                    id="meal"
-                    name="meal"
-                    value={form.meal}
-                    onChange={handleFormChange}
-                    placeholder="Meal"
-                    required
-                />
-            </div>
-            <div>
-                <label className="form-label"> 
-                    Seat
-                </label>
-                <input 
-                    type = "text"
-                    id="seat"
-                    name="seat"
-                    value={form.seat}
-                    onChange={handleFormChange}
-                    placeholder="Seat"
-                    required
-                />
-            </div>
-            <div>
-                <label className="form-label"> 
-                    Street 1
-                </label>
-                <input 
-                type = "text"
-                id="street1"
-                name="street1"
-                value={form.street1}
-                onChange={handleFormChange}
-                placeholder="Street1"
-                required
-                /> 
-            </div>
-            <div>
-                <label className="form-label">
-                    Street 2
-                </label>
-                <input 
-                    type = "text"
-                    id="street2"
-                    name="street2"
-                    value={form.street2}
-                    onChange={handleFormChange}
-                    placeholder="Street 2"
-                    required
-                /> 
-            </div>
-            <div>
-                <label className="form-label">
-                    City
-                </label>
-                <input 
-                    type = "text"
-                    id="city"
-                    name="city"
-                    value={form.city}
-                    onChange={handleFormChange}
-                    placeholder="City"
-                    required
-                /> 
-            </div>
-            <div>
-                <label className="form-label">
-                    City
-                </label>
-                <input 
-                    type = "text"
-                    id="city"
-                    name="city"
-                    value={form.city}
-                    onChange={handleFormChange}
-                    placeholder="City"
-                    required
-                /> 
-            </div>
-            <div>
-                <label className="form-label">
-                    State
-                </label>
-                <input 
-                    type = "text"
-                    id="state"
-                    name="state"
-                    value={form.state}
-                    onChange={handleFormChange}
-                    placeholder="State"
-                    required
-                />
-            </div>
-            <div>
-                <label className="form-label">
-                    Zipcode
-                </label>
-                <input 
-                    type = "text"
-                    id="zipcode"
-                    name="zipcode"
-                    value={form.zipcode}
-                    onChange={handleFormChange}
-                    placeholder="Zipcode"
-                    required
-                />
-            </div>
-            <div>
-                <label>
-                    Country
-                </label>
-                <input 
-                    type = "text"
-                    id="country"
-                    name="country"
-                    value={form.country}
-                    onChange={handleFormChange}
-                    placeholder="Country"
-                    required
-                />
             </div>
             <div>
                 <Button type='submit'>
