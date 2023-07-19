@@ -18,6 +18,7 @@ import {
 import { Profile } from "./components/Profile/Profile";
 import { About } from "./components/About/About";
 import { UpdateProfile } from "./components/Profile/UpdateProfile";
+import DisplayGift from "./components/Gifts/DisplayGift";
 
 export default function App() {
   const [userState, setUserState] = useState({

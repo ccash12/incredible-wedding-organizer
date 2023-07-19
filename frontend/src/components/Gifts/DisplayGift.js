@@ -32,7 +32,7 @@ export default function DisplayGift ({gifts, setGifts, token, partyId}) {
                 .then((res) => {
                     API.getGuests(e.target.attributes["data-partyId"].value, token)
                 .then((res) => {
-                    setGuests(res.data);
+                    setGifts(res.data);
                 })
                 .catch((err) => console.log(err));
             })
