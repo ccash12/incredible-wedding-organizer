@@ -19,6 +19,7 @@ import { Profile } from "./components/Profile/Profile";
 import { About } from "./components/About/About";
 import { UpdateProfile } from "./components/Profile/UpdateProfile";
 import DisplayGift from "./components/Gifts/DisplayGift";
+import DisplayInvite from "./components/Invite/DisplayInvite";
 
 export default function App() {
   const [userState, setUserState] = useState({
@@ -34,6 +35,7 @@ export default function App() {
   const [guests, setGuests] = useState();
   const [gifts, setGifts] = useState();
   const [giftId, setGiftId] = useState();
+  const [invite, setInvite] = useState();
 
   return (
     <div className="dark:bg-gray-700">
@@ -118,6 +120,19 @@ export default function App() {
               />
             }
           >
+            <Route
+            path="/invite"
+            element={
+              <DisplayInvite 
+                invite={invite}
+                setInvite={setInvite}
+                token={token}
+                giftId={giftId}
+                parties={parties}
+                setParties={setParties}
+              />
+            }
+          ></Route>
 
           </Route>
         </Routes>
